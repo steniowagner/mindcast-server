@@ -7,4 +7,6 @@ router.get("/", (req, res, next) => {
   });
 });
 
+router.use("/podcasts", require("./podcast"));
+
 module.exports = router;
