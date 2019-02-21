@@ -9,10 +9,6 @@ const storage = new GridFsStorage({
   url: MONGO_URL,
   file: (req, file) => {
     const { originalname } = file;
-    const fileName = originalname
-      .toLowerCase()
-      .split(" ")
-      .join("_");
 
     return new Promise((resolve, reject) => {
       crypto.randomBytes(16, (err, buffer) => {
@@ -20,9 +16,8 @@ const storage = new GridFsStorage({
           return reject(err);
         }
 
-        const filename = `${buffer.toString("hex")}${fileName}`;
+        const filename = buffer.toString("hex") + path.extname(originalname);
         const fileInfo = {
-          bucketName: "uploads",
           filename
         };
 
