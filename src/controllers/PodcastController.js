@@ -6,6 +6,27 @@ exports.upload = (req, res, next) => {
   console.log(req.file);
 };
 
+exports.download = (req, res, next) => {
+  const gfs = GridFs(mongoose.connection.db, mongoose.mongo);
+  const filename = `${req.params.file_name}.mp3`;
+
+  gfs.findOne({ filename }, (err, file) => {
+    if (err || !file) {
+      return res.status(404).json({ message: "Podcast not found." });
+    }
+
+    const { length } = file;
+
+    const podcastReadStream = gfs.createReadStream({
+      filename: file.filename
+    });
+
+    podcastReadStream.on("open", () => podcastReadStream.pipe(res));
+
+    podcastReadStream.on("error", err => res.status(500).json({ err }));
+  });
+};
+
 exports.listen = (req, res, next) => {
   const gfs = GridFs(mongoose.connection.db, mongoose.mongo);
   const filename = `${req.params.file_name}.mp3`;
