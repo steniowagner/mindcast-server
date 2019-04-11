@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "NODE_ENV=development DEBUG=mind-cast-api:* nodemon ./src/bin/index.js"
+    "dev": "NODE_ENV=development DEBUG=mind-cast-api:* nodemon ./src/bin/index.js --ignore __tests__",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -23,11 +24,16 @@
     "gridfs-stream": "^1.1.1",
     "mongoose": "^5.4.14",
     "multer": "^1.4.1",
+    "test": "jest",
     "multer-gridfs-storage": "^3.2.3"
   },
   "devDependencies": {
     "debug": "^4.1.1",
     "dotenv": "^6.2.0",
-    "nodemon": "^1.18.10"
+    "factory-girl": "^5.0.4",
+    "jest": "^24.7.1",
+    "nodemon": "^1.18.10",
+    "supertest": "^4.0.2",
+    "faker": "^4.1.0"
   }
 }
