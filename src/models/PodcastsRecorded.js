@@ -7,4 +7,4 @@ const PodcastsRecordedSchema = mongoose.Schema({
   },
 });
 
-module.exports = mognoose.model('PodcastsRecorded', PodcastsRecordedSchema);
+module.exports = mongoose.model('PodcastsRecorded', PodcastsRecordedSchema);

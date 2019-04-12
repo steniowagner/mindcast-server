@@ -9,7 +9,14 @@ const PodcastSchema = mongoose.Schema({
   category: {
     type: String,
     required: true,
-    enum: ['science', 'technology', 'philosofy', 'literature', 'pop-culture', 'history'],
+    enum: [
+      'science',
+      'technology',
+      'philosofy',
+      'literature',
+      'pop-culture',
+      'history',
+    ],
   },
   title: {
     type: String,
@@ -49,10 +56,15 @@ const PodcastSchema = mongoose.Schema({
   },
 });
 
-AuthroSchema.set('toJSON', {
-  transform(doc, returned, options) {
-    returned.id = returned._id;
-    delete returned._id;
+PodcastSchema.set('toJSON', {
+  transform(_doc, returned) {
+    const returnedDocument = JSON.stringify(returned);
+    const document = JSON.parse(returnedDocument);
+
+    document.id = returned._id;
+    delete document._id;
+
+    return document;
   },
 });
 

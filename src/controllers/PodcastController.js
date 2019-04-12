@@ -1,12 +1,11 @@
-const debug = require('debug')('mind-cast-api:podcast-controller');
 const GridFs = require('gridfs-stream');
 const mongoose = require('../db');
 
-exports.upload = (req, res, next) => {
+exports.upload = (req) => {
   console.log(req.file);
 };
 
-exports.download = (req, res, next) => {
+exports.download = (req, res) => {
   const gfs = GridFs(mongoose.connection.db, mongoose.mongo);
   const filename = `${req.params.file_name}.mp3`;
 
@@ -15,19 +14,17 @@ exports.download = (req, res, next) => {
       return res.status(404).json({ message: 'Podcast not found.' });
     }
 
-    const { length } = file;
-
     const podcastReadStream = gfs.createReadStream({
       filename: file.filename,
     });
 
     podcastReadStream.on('open', () => podcastReadStream.pipe(res));
 
-    podcastReadStream.on('error', err => res.status(500).json({ err }));
+    podcastReadStream.on('error', error => res.status(500).json({ error }));
   });
 };
 
-exports.listen = (req, res, next) => {
+exports.listen = (req, res) => {
   const gfs = GridFs(mongoose.connection.db, mongoose.mongo);
   const filename = `${req.params.file_name}.mp3`;
 
@@ -39,7 +36,9 @@ exports.listen = (req, res, next) => {
     const { range } = req.headers;
     const { length } = file;
 
-    const startChunk = Number((range || '').replace(/bytes=/, '').split('-')[0]);
+    const startChunk = Number(
+      (range || '').replace(/bytes=/, '').split('-')[0],
+    );
     const endChunk = length - 1;
     const chunkSize = endChunk - startChunk + 1;
 
@@ -61,14 +60,14 @@ exports.listen = (req, res, next) => {
     });
 
     podcastReadStream.on('open', () => {
-      debug('OPEN');
+      console.log('OPEN');
       podcastReadStream.pipe(res);
     });
 
-    podcastReadStream.on('data', chunk => debug(chunk));
+    podcastReadStream.on('data', chunk => console.log(chunk));
 
     podcastReadStream.on('error', (streamErr) => {
-      debug(streamErr);
+      console.log(streamErr);
       res.status(500).end(streamErr);
     });
   });

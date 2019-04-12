@@ -1,3 +1,23 @@
 {
+  "env": {
+    "jest": true
+  },
+  "rules": {
+    "no-plusplus": 0,
+    "max-len": 0,
+    "lines-between-class-members": 0,
+    "no-underscore-dangle": 0,
+    "import/no-cycle": 0,
+    "no-alert": 0,
+    "global-require": "off",
+    "no-console": "off",
+    "consistent-return": 0,
+    "no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_"
+      }
+    ]
+  },
   "extends": "airbnb-base"
 }

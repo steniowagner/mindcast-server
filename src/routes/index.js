@@ -2,7 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 
-router.get('/', (req, res, next) => res.status(200).send({
+router.get('/', (req, res) => res.status(200).send({
   message: 'UHUL! The API is UP && RUNNING!',
 }));
 
