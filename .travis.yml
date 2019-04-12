@@ -1,12 +1,13 @@
 sudo: false
-
 language: node_js
-
 node_js:
   - "10"
-
 script:
+  - npm run lint
   - npm run test
-
 notifications:
   email: false
+deploy:
+  provider: heroku
+  api_key:
+    secure: OizReCWjZIkaacQX+mg0p+vEDW9CziUlK+st1Gf2ALi0ew2By1jtdnUolE51zvBbLs6xrQWeDM16zjxBAl+L7eRxUucIIe8ku75cFaA+YPHYRf1mNPVkV2p7AYhj0wUWd0dS5h8eJQEymfwuqG6oZYtFO3eZZhw+mXqP82D2AGn9mG7pV27vAsB0OIdRc199AWtAiVOpPLe0pTetyPlcOK+0bqzvDDgFnTsWnGLtKK5qEAsdw2tDRHDMpvfJH+J/awaWWR+5IOk7kMqldmPeamDpI2GoShN+hnEvcr0TsrQmF8cgLhbur18oLR4S5QwGYWtWZH1IKirbJV1e7oIc/VtMdlI51mj224YKRhjskxIIy93YFzUSJsCurME5V9rD2x5Vr2fTejy5g8lp0CvLN3UTvbCPgBiYTPzBMo2zLxXQ3p9niUOiGiA6534E7a/7zGr6i5FJsAqHHjV3Cl5p1DF9A4EmVUNCRlwZlqTyRtwjeHLUODTsUbYSpUsTQ3PfwtUvYI0Dzzo0RMGWVvpTrfRzvr5S4M7zCaBGCN0Wp2MZm2nnrHyg9ZQfjbXUWeogWWBtR3Q+b0+OtA65/kKbfgI4REWqCdCoIs62AzIbRknKHE/Gc6JHb8jA/ktlCM8SFAyCe2DM+MplvJqtxANvZDfeV1CF7ISzxC8OuO9BG9s=
