@@ -1,9 +1,9 @@
-const cluster = require("cluster");
-const { cpus } = require("os");
+const cluster = require('cluster');
+const { cpus } = require('os');
 
-const serverListeners = require("./server-listeners");
-const environment = require("../config/environment");
-const app = require("../app");
+const serverListeners = require('./server-listeners');
+const environment = require('../config/environment');
+const app = require('../app');
 
 const numCPUs = cpus().length;
 
@@ -16,7 +16,7 @@ if (cluster.isMaster) {
   const { PORT } = environment;
   const server = app.listen(PORT);
 
-  server.on("listening", () => onListening(server));
+  server.on('listening', () => onListening(server));
 
-  server.on("error", err => onError(err, PORT));
+  server.on('error', err => onError(err, PORT));
 }
