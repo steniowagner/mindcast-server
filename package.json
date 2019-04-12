@@ -6,7 +6,7 @@
   "scripts": {
     "start": "NODE_ENV=production node ./src/bin",
     "dev": "NODE_ENV=development nodemon ./src/bin/index.js --ignore __tests__",
-    "test": "NODE_ENV=test jest --coverage --coverageReporters=text-lcov | coveralls",
+    "test": "NODE_ENV=test jest",
     "lint": "eslint '**/*.js'",
     "lint:fix": "prettier-eslint '**/*.js' --write"
   },
@@ -43,7 +43,6 @@
     "dotenv": "^6.2.0"
   },
   "devDependencies": {
-    "coveralls": "^3.0.3",
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.16.0",
