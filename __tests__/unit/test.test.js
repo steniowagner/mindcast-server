@@ -1,5 +1,5 @@
 describe("should test", () => {
   it("it`s working?", () => {
-    expect(true).toEqual(true);
+    expect(true).toEqual(false);
   });
 });
