@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node ./src/bin",
+    "start": "NODE_ENV=production node ./src/bin",
     "dev": "NODE_ENV=development DEBUG=mind-cast-api:* nodemon ./src/bin/index.js --ignore __tests__",
     "test": "NODE_ENV=test jest --coverage --coverageReporters=text-lcov | coveralls",
     "lint": "eslint '**/*.js'",
