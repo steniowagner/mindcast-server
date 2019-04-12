@@ -38,11 +38,11 @@
     "gridfs-stream": "^1.1.1",
     "mongoose": "^5.4.14",
     "multer": "^1.4.1",
+    "debug": "^4.1.1",
     "multer-gridfs-storage": "^3.2.3"
   },
   "devDependencies": {
     "coveralls": "^3.0.3",
-    "debug": "^4.1.1",
     "dotenv": "^6.2.0",
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.1.0",
