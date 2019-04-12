@@ -1,10 +1,10 @@
 require('dotenv').config({
-  path: process.env.NODE_ENV === 'development' ? '.env.development' : '',
+  path: process.env.NODE_ENV === 'production' ? '.env' : `.env.${process.env.NODE_ENV}`,
 });
 
 const config = {
   development: {
-    MONGO_URL: process.env.DATABASE_URL,
+    DATABASE_URL: process.env.DATABASE_URL,
     PORT: process.env.PORT,
   },
 };

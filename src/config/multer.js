@@ -3,10 +3,10 @@ const crypto = require('crypto');
 const multer = require('multer');
 const path = require('path');
 
-const { MONGO_URL } = require('../config/environment');
+const { DATABASE_URL } = require('../config/environment');
 
 const storage = new GridFsStorage({
-  url: MONGO_URL,
+  url: DATABASE_URL,
   file: (req, file) => {
     const { originalname } = file;
 
