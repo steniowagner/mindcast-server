@@ -1,66 +1,59 @@
-const mongoose = require("../db");
+const mongoose = require('../db');
 
 const PodcastSchema = mongoose.Schema({
   author: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    ref: "Author"
+    ref: 'Author',
   },
   category: {
     type: String,
     required: true,
-    enum: [
-      "science",
-      "technology",
-      "philosofy",
-      "literature",
-      "pop-culture",
-      "history"
-    ]
+    enum: ['science', 'technology', 'philosofy', 'literature', 'pop-culture', 'history'],
   },
   title: {
     type: String,
-    required: true
+    required: true,
   },
   description: {
     type: String,
-    required: true
+    required: true,
   },
   imageURL: {
     type: String,
-    requried: true
+    requried: true,
   },
   thumbnailImageURL: {
     type: String,
-    required: true
+    required: true,
   },
   subject: {
     type: String,
-    required: true
+    required: true,
   },
   stars: {
     type: Number,
-    requried: true
+    requried: true,
   },
   url: {
     type: String,
-    requried: true
+    requried: true,
   },
   duration: {
     type: String,
-    requried: true
+    requried: true,
   },
   totalDurationInSeconds: {
     type: Number,
-    requried: true
-  }
+    requried: true,
+  },
 });
 
-AuthroSchema.set("toJSON", {
-  transform: function(doc, returned, options) {
+AuthroSchema.set('toJSON', {
+  transform(doc, returned, options) {
     returned.id = returned._id;
     delete returned._id;
-  }
+  },
 });
 
-module.exports = mongoose.model("Podcast", PodcastSchema);
+module.exports = mongoose.model('Podcast', PodcastSchema);
