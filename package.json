@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node ./src/bin",
     "dev": "NODE_ENV=development nodemon ./src/bin/index.js --ignore __tests__",
-    "test": "NODE_ENV=test jest --coverage --coverageReporters=text-lcov | coveralls",
+    "test:coverage": "jest --coverage",
+    "test:coveralls": "NODE_ENV=test jest --coverage --coverageReporters=text-lcov | coveralls",
     "lint": "eslint '**/*.js'",
     "lint:fix": "prettier-eslint '**/*.js' --write"
   },
