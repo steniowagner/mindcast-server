@@ -6,8 +6,6 @@ describe('Welcome Route', () => {
     const { status, body } = await request(app).get('/mind-cast/api/v1');
 
     expect(status).toBe(200);
-    expect(!!body.message).toBe(true);
-    expect(typeof body.message).toBe('string');
-    expect(body.message).toBe('UHUL! The API is UP && RUNNING!!!');
+    expect(body).toHaveProperty('message', 'UHUL! The API is UP && RUNNING!!!');
   });
 });

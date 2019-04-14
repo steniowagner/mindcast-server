@@ -12,12 +12,7 @@
     "global-require": "off",
     "no-console": "off",
     "consistent-return": 0,
-    "no-unused-vars": [
-      "error",
-      {
-        "argsIgnorePattern": "^_"
-      }
-    ]
+    "no-unused-vars": 0
   },
   "extends": "airbnb-base"
 }
