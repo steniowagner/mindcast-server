@@ -9,35 +9,38 @@ const typesCategory = [
   'history',
 ];
 
-const AuthroSchema = new mongoose.Schema({
-  podcasts: {
-    type: [mongoose.Schema.Types.ObjectId],
-    default: [],
-    ref: 'Podcast',
-  },
-  categories: [
-    {
+const AuthroSchema = new mongoose.Schema(
+  {
+    podcasts: {
+      type: [mongoose.Schema.Types.ObjectId],
+      default: [],
+      ref: 'Podcast',
+    },
+    categories: [
+      {
+        type: String,
+        required: true,
+      },
+    ],
+    name: {
       type: String,
       required: true,
     },
-  ],
-  name: {
-    type: String,
-    required: true,
+    profileImageURL: {
+      type: String,
+      required: true,
+    },
+    thumbnailProfileImageURL: {
+      type: String,
+      required: true,
+    },
+    about: {
+      type: String,
+      required: true,
+    },
   },
-  profileImageURL: {
-    type: String,
-    required: true,
-  },
-  thumbnailProfileImageURL: {
-    type: String,
-    required: true,
-  },
-  about: {
-    type: String,
-    required: true,
-  },
-});
+  { versionKey: false },
+);
 
 AuthroSchema.path('categories').validate((categories) => {
   if (!categories || categories.length === 0) {
@@ -59,6 +62,9 @@ AuthroSchema.set('toJSON', {
     const document = JSON.parse(returnedDocument);
 
     document.id = returned._id;
+
+    delete document._id;
+    delete document.__v;
 
     return document;
   },

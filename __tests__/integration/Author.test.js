@@ -1,17 +1,52 @@
-const mockingoose = require('mockingoose').default;
-const mongoose = require('mongoose');
 const request = require('supertest');
 
+const checkIsSameAuthor = require('../helpers/author/checkIsSameAuthor');
+const fakeAuthor = require('../helpers/author/fakeAuthor');
+const clearDatabase = require('../helpers/clearDatabase');
 const AuthorFactory = require('../factories/Author');
 const app = require('../../src/app');
 
-const Author = mongoose.model('Author');
+const {
+  createMultipleAuthors,
+  createSingleAuthor,
+} = require('../helpers/author/createAuthor');
+
+describe('GET in /author/:id', () => {
+  beforeEach(() => clearDatabase());
+
+  it('it should read and return the author with id equal to id received', async (done) => {
+    const author = await createSingleAuthor();
+
+    const response = await request(app).get(
+      `/mind-cast/api/v1/author/${author.id}`,
+    );
+
+    expect(response).toHaveProperty('status', 200);
+    expect(response.body).toHaveProperty('author');
+
+    const isSameAuthor = checkIsSameAuthor(response.body.author, author);
+    expect(isSameAuthor).toBe(true);
+
+    done();
+  });
+
+  it("it should return a 404 HTTP code if there's no author with the id received", async (done) => {
+    const response = await request(app).get(
+      '/mind-cast/api/v1/author/123456789987654321123456',
+    );
+
+    expect(response).toHaveProperty('status', 404);
+    expect(response.body.author).toBeUndefined();
+    expect(response.body).toHaveProperty('message', 'Author not found');
+
+    done();
+  });
+});
 
 describe('GET in /author', () => {
-  it('it shoudl return an empty array', async (done) => {
-    const authors = [];
-    mockingoose(Author).toReturn(authors, 'find');
+  beforeEach(() => clearDatabase());
 
+  it('it should return an empty array', async (done) => {
     const response = await request(app).get('/mind-cast/api/v1/author');
 
     expect(response).toHaveProperty('status', 200);
@@ -23,10 +58,7 @@ describe('GET in /author', () => {
   });
 
   it('it should return all the Authors recorded', async (done) => {
-    const author = await AuthorFactory;
-    const authors = Array(5).fill(author);
-    console.log(typeof author._id, author._id);
-    mockingoose(Author).toReturn(authors, 'find');
+    const authors = await createMultipleAuthors();
 
     const response = await request(app).get('/mind-cast/api/v1/author');
 
@@ -36,31 +68,9 @@ describe('GET in /author', () => {
     expect(response.body.authors).toHaveLength(5);
 
     for (let i = 0; i < authors.length; i++) {
-      expect(response.body.authors[i]).toHaveProperty('about', author.about);
-      expect(typeof response.body.authors[i].about).toBe('string');
-
-      expect(response.body.authors[i]).toHaveProperty('name', author.name);
-      expect(typeof response.body.authors[i].name).toBe('string');
-
-      expect(response.body.authors[i]).toHaveProperty('_id');
-      expect(response.body.authors[i]).toHaveProperty(
-        'thumbnailProfileImageURL',
-        author.thumbnailProfileImageURL,
+      expect(checkIsSameAuthor(response.body.authors[i], authors[i])).toBe(
+        true,
       );
-      expect(typeof response.body.authors[i].thumbnailProfileImageURL).toBe(
-        'string',
-      );
-
-      expect(response.body.authors[i]).toHaveProperty(
-        'profileImageURL',
-        author.profileImageURL,
-      );
-      expect(typeof response.body.authors[i].profileImageURL).toBe('string');
-
-      response.body.authors[i].categories.forEach((category) => {
-        expect(author.categories.includes(category)).toBe(true);
-        expect(typeof category).toBe('string');
-      });
     }
 
     done();
@@ -68,12 +78,12 @@ describe('GET in /author', () => {
 });
 
 describe('POST in /author', () => {
-  it('it should return the id of the new Author', async (done) => {
-    const author = await AuthorFactory;
+  beforeEach(() => clearDatabase());
 
+  it('it should return the id of the new Author', async (done) => {
     const response = await request(app)
       .post('/mind-cast/api/v1/author')
-      .send(author);
+      .send(fakeAuthor);
 
     expect(response).toHaveProperty('status', 201);
     expect(response).toHaveProperty('body');
@@ -84,22 +94,8 @@ describe('POST in /author', () => {
     done();
   });
 
-  it('it should persist an Author on Database', async (done) => {
-    const author = await AuthorFactory;
-
-    mockingoose(Author).toReturn(author, 'save');
-
-    const { id } = await Author.create(author);
-
-    expect(typeof id).toBe('string');
-    expect(id).toHaveLength(24);
-
-    done();
-  });
-
   it('it should not create an Author when missing some required fields', async (done) => {
-    const author = await AuthorFactory;
-
+    const author = JSON.parse(JSON.stringify(fakeAuthor));
     const authorKeys = Object.keys(author);
     const MAX = authorKeys.length - 1;
     const MIN = 0;
