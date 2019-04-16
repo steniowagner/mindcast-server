@@ -37,3 +37,27 @@ exports.read = async (req, res) => {
     return res.status(500).send({ message: err.message });
   }
 };
+
+exports.readById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const author = await AuthorDAO.readById(id);
+
+    if (!author) {
+      return res
+        .status(404)
+        .json({
+          message: 'Author not found',
+        })
+        .send();
+    }
+
+    return res
+      .status(200)
+      .json({ author })
+      .send();
+  } catch (err) {
+    return res.status(500).send({ message: err.message });
+  }
+};

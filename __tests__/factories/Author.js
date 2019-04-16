@@ -1,14 +1,8 @@
 const { factory } = require('factory-girl');
-const faker = require('faker');
 
+const fakeAuthor = require('../helpers/author/fakeAuthor');
 const Author = require('../../src/models/Author');
 
-factory.define('Author', Author, {
-  categories: ['science', 'technology', 'philosofy'],
-  thumbnailProfileImageURL: faker.image.people,
-  profileImageURL: faker.image.people,
-  about: faker.lorem.paragraph,
-  name: faker.name.findName(),
-});
+factory.define('Author', Author, fakeAuthor);
 
-module.exports = factory.create('Author');
+module.exports = factory;

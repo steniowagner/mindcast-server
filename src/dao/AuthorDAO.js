@@ -4,6 +4,15 @@ const AuthorModel = require('../models/Author');
 
 const Author = mongoose.model('Author');
 
+exports.create = async (data) => {
+  try {
+    const author = new Author(data);
+    return await author.save();
+  } catch (err) {
+    throw err;
+  }
+};
+
 exports.read = async () => {
   try {
     return await Author.find();
@@ -12,10 +21,9 @@ exports.read = async () => {
   }
 };
 
-exports.create = async (data) => {
+exports.readById = async (id) => {
   try {
-    const author = new Author(data);
-    return await author.save();
+    return await Author.findById(id);
   } catch (err) {
     throw err;
   }
