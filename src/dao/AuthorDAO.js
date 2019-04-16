@@ -4,6 +4,14 @@ const AuthorModel = require('../models/Author');
 
 const Author = mongoose.model('Author');
 
+exports.read = async () => {
+  try {
+    return await Author.find();
+  } catch (err) {
+    throw err;
+  }
+};
+
 exports.create = async (data) => {
   try {
     const author = new Author(data);
