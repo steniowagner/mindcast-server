@@ -28,3 +28,11 @@ exports.readById = async (id) => {
     throw err;
   }
 };
+
+exports.update = async (id, data) => {
+  try {
+    return await Author.findByIdAndUpdate(id, { $set: data }, { new: true });
+  } catch (err) {
+    throw err;
+  }
+};

@@ -3,13 +3,46 @@ const request = require('supertest');
 const checkIsSameAuthor = require('../helpers/author/checkIsSameAuthor');
 const fakeAuthor = require('../helpers/author/fakeAuthor');
 const clearDatabase = require('../helpers/clearDatabase');
-const AuthorFactory = require('../factories/Author');
 const app = require('../../src/app');
 
 const {
   createMultipleAuthors,
   createSingleAuthor,
 } = require('../helpers/author/createAuthor');
+
+describe('PATCH in /author/:id', () => {
+  beforeEach(() => clearDatabase());
+
+  it('it should return an error if the author doesn`t exist', async (done) => {
+    const response = await request(app)
+      .patch('/mind-cast/api/v1/author/123456789987654321123456')
+      .send(fakeAuthor);
+
+    expect(response).toHaveProperty('status', 404);
+    expect(response.body).toHaveProperty('message', 'Author not found');
+    expect(response.body.author).toBeUndefined();
+
+    done();
+  });
+
+  it('it should receive an author, update it with new values and return the author updated', async (done) => {
+    const author = await createSingleAuthor();
+
+    author.name = 'Stenio Wagner';
+
+    const response = await request(app)
+      .patch(`/mind-cast/api/v1/author/${author.id}`)
+      .send(author);
+
+    expect(response).toHaveProperty('status', 200);
+    expect(response.body).toHaveProperty('author');
+
+    const isSameAuthor = checkIsSameAuthor(response.body.author, author);
+    expect(isSameAuthor).toBe(true);
+
+    done();
+  });
+});
 
 describe('GET in /author/:id', () => {
   beforeEach(() => clearDatabase());

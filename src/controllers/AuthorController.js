@@ -61,3 +61,19 @@ exports.readById = async (req, res) => {
     return res.status(500).send({ message: err.message });
   }
 };
+
+exports.update = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const author = await AuthorDAO.update(id, { ...req.body });
+
+    if (!author) {
+      return res.status(404).send({ message: 'Author not found' });
+    }
+
+    return res.status(200).send({ author });
+  } catch (err) {
+    return res.status(500).send({ message: err.message });
+  }
+};

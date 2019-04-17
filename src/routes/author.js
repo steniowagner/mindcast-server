@@ -7,5 +7,6 @@ const AuthorController = require('../controllers/AuthorController');
 router.get('/', AuthorController.read);
 router.get('/:id', AuthorController.readById);
 router.post('/', AuthorController.create);
+router.patch('/:id', AuthorController.update);
 
 module.exports = router;
