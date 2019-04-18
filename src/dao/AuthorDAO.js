@@ -36,3 +36,11 @@ exports.update = async (id, data) => {
     throw err;
   }
 };
+
+exports.delete = async (id) => {
+  try {
+    return await Author.findByIdAndRemove(id);
+  } catch (err) {
+    throw err;
+  }
+};
