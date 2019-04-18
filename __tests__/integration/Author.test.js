@@ -10,12 +10,52 @@ const {
   createSingleAuthor,
 } = require('../helpers/author/createAuthor');
 
-describe('PATCH in /author/:id', () => {
+describe('DELETE in /authors/:id', () => {
+  beforeEach(() => clearDatabase());
+
+  it('it should remove the author with the id received', async (done) => {
+    const author = await createSingleAuthor();
+
+    const deleteAuthorResponse = await request(app).delete(
+      `/mind-cast/api/v1/authors/${author.id}`,
+    );
+
+    expect(deleteAuthorResponse).toHaveProperty('status', 204);
+    expect(Object.keys(deleteAuthorResponse.body).length).toBe(0);
+
+    const getAuthorByIdResponse = await request(app).get(
+      `/mind-cast/api/v1/authors/${author.id}`,
+    );
+
+    expect(getAuthorByIdResponse).toHaveProperty('status', 404);
+    expect(getAuthorByIdResponse.body).toHaveProperty(
+      'message',
+      'Author not found',
+    );
+    expect(getAuthorByIdResponse.body.author).toBeUndefined();
+
+    done();
+  });
+
+  it('it should return an error if the author doesn`t exist', async (done) => {
+    const response = await request(app)
+      .delete('/mind-cast/api/v1/authors/123456789987654321123456')
+      .send(fakeAuthor);
+
+    expect(response).toHaveProperty('status', 404);
+    expect(response.body).toHaveProperty('message', 'Author not found');
+    expect(response.body.author).toBeUndefined();
+
+    done();
+  });
+});
+
+describe('PATCH in /authors/:id', () => {
   beforeEach(() => clearDatabase());
 
   it('it should return an error if the author doesn`t exist', async (done) => {
     const response = await request(app)
-      .patch('/mind-cast/api/v1/author/123456789987654321123456')
+      .patch('/mind-cast/api/v1/authors/123456789987654321123456')
       .send(fakeAuthor);
 
     expect(response).toHaveProperty('status', 404);
@@ -31,7 +71,7 @@ describe('PATCH in /author/:id', () => {
     author.name = 'Stenio Wagner';
 
     const response = await request(app)
-      .patch(`/mind-cast/api/v1/author/${author.id}`)
+      .patch(`/mind-cast/api/v1/authors/${author.id}`)
       .send(author);
 
     expect(response).toHaveProperty('status', 200);
@@ -44,14 +84,14 @@ describe('PATCH in /author/:id', () => {
   });
 });
 
-describe('GET in /author/:id', () => {
+describe('GET in /authors/:id', () => {
   beforeEach(() => clearDatabase());
 
   it('it should read and return the author with id equal to id received', async (done) => {
     const author = await createSingleAuthor();
 
     const response = await request(app).get(
-      `/mind-cast/api/v1/author/${author.id}`,
+      `/mind-cast/api/v1/authors/${author.id}`,
     );
 
     expect(response).toHaveProperty('status', 200);
@@ -65,7 +105,7 @@ describe('GET in /author/:id', () => {
 
   it("it should return a 404 HTTP code if there's no author with the id received", async (done) => {
     const response = await request(app).get(
-      '/mind-cast/api/v1/author/123456789987654321123456',
+      '/mind-cast/api/v1/authors/123456789987654321123456',
     );
 
     expect(response).toHaveProperty('status', 404);
@@ -76,11 +116,11 @@ describe('GET in /author/:id', () => {
   });
 });
 
-describe('GET in /author', () => {
+describe('GET in /authors', () => {
   beforeEach(() => clearDatabase());
 
   it('it should return an empty array', async (done) => {
-    const response = await request(app).get('/mind-cast/api/v1/author');
+    const response = await request(app).get('/mind-cast/api/v1/authors');
 
     expect(response).toHaveProperty('status', 200);
     expect(response.body).toHaveProperty('authors');
@@ -93,7 +133,7 @@ describe('GET in /author', () => {
   it('it should return all the Authors recorded', async (done) => {
     const authors = await createMultipleAuthors();
 
-    const response = await request(app).get('/mind-cast/api/v1/author');
+    const response = await request(app).get('/mind-cast/api/v1/authors');
 
     expect(response).toHaveProperty('status', 200);
     expect(response.body).toHaveProperty('authors');
@@ -110,12 +150,12 @@ describe('GET in /author', () => {
   });
 });
 
-describe('POST in /author', () => {
+describe('POST in /authors', () => {
   beforeEach(() => clearDatabase());
 
   it('it should return the id of the new Author', async (done) => {
     const response = await request(app)
-      .post('/mind-cast/api/v1/author')
+      .post('/mind-cast/api/v1/authors')
       .send(fakeAuthor);
 
     expect(response).toHaveProperty('status', 201);
@@ -139,7 +179,7 @@ describe('POST in /author', () => {
     delete author[randomField];
 
     const response = await request(app)
-      .post('/mind-cast/api/v1/author')
+      .post('/mind-cast/api/v1/authors')
       .send(author);
 
     expect(response).toHaveProperty('status', 400);

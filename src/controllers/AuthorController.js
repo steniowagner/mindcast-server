@@ -77,3 +77,19 @@ exports.update = async (req, res) => {
     return res.status(500).send({ message: err.message });
   }
 };
+
+exports.delete = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const author = await AuthorDAO.delete(id);
+
+    if (!author) {
+      return res.status(404).send({ message: 'Author not found' });
+    }
+
+    return res.status(204).send();
+  } catch (err) {
+    return res.status(500).send({ message: err.message });
+  }
+};
