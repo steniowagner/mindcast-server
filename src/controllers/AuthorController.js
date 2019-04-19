@@ -1,6 +1,6 @@
 const AuthorDAO = require('../dao/AuthorDAO');
 
-exports.create = async (req, res) => {
+exports.create = async (req, res, next) => {
   try {
     const { id } = await AuthorDAO.create(req.body);
 
@@ -11,21 +11,19 @@ exports.create = async (req, res) => {
       })
       .send();
   } catch (err) {
-    const { errors, message } = err;
+    err.status = 500;
 
-    let status = 500;
-
-    const hasFieldErrors = Object.keys(errors).length > 0;
+    const hasFieldErrors = Object.keys(err.errors).length > 0;
 
     if (hasFieldErrors) {
-      status = 400;
+      err.status = 400;
     }
 
-    return res.status(status).send({ message });
+    next(err);
   }
 };
 
-exports.read = async (req, res) => {
+exports.read = async (req, res, next) => {
   try {
     const authors = await AuthorDAO.read();
 
@@ -34,11 +32,11 @@ exports.read = async (req, res) => {
       .json({ authors })
       .send();
   } catch (err) {
-    return res.status(500).send({ message: err.message });
+    next(err);
   }
 };
 
-exports.readById = async (req, res) => {
+exports.readById = async (req, res, next) => {
   try {
     const { id } = req.params;
 
@@ -58,11 +56,11 @@ exports.readById = async (req, res) => {
       .json({ author })
       .send();
   } catch (err) {
-    return res.status(500).send({ message: err.message });
+    next(err);
   }
 };
 
-exports.update = async (req, res) => {
+exports.update = async (req, res, next) => {
   try {
     const { id } = req.params;
 
@@ -74,11 +72,11 @@ exports.update = async (req, res) => {
 
     return res.status(200).send({ author });
   } catch (err) {
-    return res.status(500).send({ message: err.message });
+    next(err);
   }
 };
 
-exports.delete = async (req, res) => {
+exports.delete = async (req, res, next) => {
   try {
     const { id } = req.params;
 
@@ -90,6 +88,6 @@ exports.delete = async (req, res) => {
 
     return res.status(204).send();
   } catch (err) {
-    return res.status(500).send({ message: err.message });
+    next(err);
   }
 };

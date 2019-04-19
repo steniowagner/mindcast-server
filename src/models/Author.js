@@ -9,7 +9,7 @@ const typesCategory = [
   'history',
 ];
 
-const AuthroSchema = new mongoose.Schema(
+const AuthorSchema = new mongoose.Schema(
   {
     podcasts: {
       type: [mongoose.Schema.Types.ObjectId],
@@ -42,7 +42,7 @@ const AuthroSchema = new mongoose.Schema(
   { versionKey: false },
 );
 
-AuthroSchema.path('categories').validate((categories) => {
+AuthorSchema.path('categories').validate((categories) => {
   if (!categories || categories.length === 0) {
     return false;
   }
@@ -56,7 +56,7 @@ AuthroSchema.path('categories').validate((categories) => {
   return true;
 });
 
-AuthroSchema.set('toJSON', {
+AuthorSchema.set('toJSON', {
   transform(doc, returned) {
     const returnedDocument = JSON.stringify(returned);
     const document = JSON.parse(returnedDocument);
@@ -70,4 +70,4 @@ AuthroSchema.set('toJSON', {
   },
 });
 
-module.exports = mongoose.model('Author', AuthroSchema);
+module.exports = mongoose.model('Author', AuthorSchema);

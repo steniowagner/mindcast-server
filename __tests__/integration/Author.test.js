@@ -13,7 +13,7 @@ const {
 describe('DELETE in /authors/:id', () => {
   beforeEach(() => clearDatabase());
 
-  it('it should remove the author with the id received', async (done) => {
+  it('should remove the author with the id received', async (done) => {
     const author = await createSingleAuthor();
 
     const deleteAuthorResponse = await request(app).delete(
@@ -37,7 +37,7 @@ describe('DELETE in /authors/:id', () => {
     done();
   });
 
-  it('it should return an error if the author doesn`t exist', async (done) => {
+  it('should return an error if the author doesn`t exist', async (done) => {
     const response = await request(app)
       .delete('/mind-cast/api/v1/authors/123456789987654321123456')
       .send(fakeAuthor);
@@ -53,7 +53,7 @@ describe('DELETE in /authors/:id', () => {
 describe('PATCH in /authors/:id', () => {
   beforeEach(() => clearDatabase());
 
-  it('it should return an error if the author doesn`t exist', async (done) => {
+  it('should return an error if the author doesn`t exist', async (done) => {
     const response = await request(app)
       .patch('/mind-cast/api/v1/authors/123456789987654321123456')
       .send(fakeAuthor);
@@ -65,7 +65,7 @@ describe('PATCH in /authors/:id', () => {
     done();
   });
 
-  it('it should receive an author, update it with new values and return the author updated', async (done) => {
+  it('should receive an author, update it with new values and return the author updated', async (done) => {
     const author = await createSingleAuthor();
 
     author.name = 'Stenio Wagner';
@@ -87,7 +87,7 @@ describe('PATCH in /authors/:id', () => {
 describe('GET in /authors/:id', () => {
   beforeEach(() => clearDatabase());
 
-  it('it should read and return the author with id equal to id received', async (done) => {
+  it('should read and return the author with id equal to id received', async (done) => {
     const author = await createSingleAuthor();
 
     const response = await request(app).get(
@@ -119,7 +119,7 @@ describe('GET in /authors/:id', () => {
 describe('GET in /authors', () => {
   beforeEach(() => clearDatabase());
 
-  it('it should return an empty array', async (done) => {
+  it('should return an empty array', async (done) => {
     const response = await request(app).get('/mind-cast/api/v1/authors');
 
     expect(response).toHaveProperty('status', 200);
@@ -130,7 +130,7 @@ describe('GET in /authors', () => {
     done();
   });
 
-  it('it should return all the Authors recorded', async (done) => {
+  it('should return all the Authors recorded', async (done) => {
     const authors = await createMultipleAuthors();
 
     const response = await request(app).get('/mind-cast/api/v1/authors');
@@ -153,7 +153,7 @@ describe('GET in /authors', () => {
 describe('POST in /authors', () => {
   beforeEach(() => clearDatabase());
 
-  it('it should return the id of the new Author', async (done) => {
+  it('should return the id of the new Author', async (done) => {
     const response = await request(app)
       .post('/mind-cast/api/v1/authors')
       .send(fakeAuthor);
@@ -167,7 +167,7 @@ describe('POST in /authors', () => {
     done();
   });
 
-  it('it should not create an Author when missing some required fields', async (done) => {
+  it('should not create an Author when missing some required fields', async (done) => {
     const author = JSON.parse(JSON.stringify(fakeAuthor));
     const authorKeys = Object.keys(author);
     const MAX = authorKeys.length - 1;
