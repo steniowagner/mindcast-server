@@ -3,6 +3,9 @@ const bodyParser = require('body-parser');
 
 const app = express();
 
+const routeNotFound = require('./middlewares/routeNotFound');
+const errorHandler = require('./middlewares/errorHandler');
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -17,14 +20,8 @@ app.use((req, res, next) => {
 
 app.use('/mind-cast/api/v1', require('./routes'));
 
-app.use((req, res, next) => {
-  const err = new Error('Route Not Found');
-  err.status = 404;
-  next(err);
-});
+app.use(routeNotFound);
 
-app.use((err, req, res) => {
-  res.status(err.status || 500).json({ message: err.message });
-});
+app.use(errorHandler);
 
 module.exports = app;
