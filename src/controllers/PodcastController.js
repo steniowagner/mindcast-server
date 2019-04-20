@@ -1,74 +1,35 @@
+const mp3Duration = require('mp3-duration');
 const GridFs = require('gridfs-stream');
-const mongoose = require('../db');
+const { promisify } = require('util');
+const fs = require('fs');
 
-exports.upload = (req) => {
-  console.log(req.file);
+const { connection, mongo } = require('../db');
+
+const _handlePersistPodcastFile = (filename, path) => {
+  const gfs = GridFs(connection.db, mongo);
+
+  const writestream = gfs.createWriteStream({
+    filename,
+  });
+
+  fs.createReadStream(path).pipe(writestream);
+
+  writestream.on('close', () => fs.unlinkSync(path));
 };
 
-exports.download = (req, res) => {
-  const gfs = GridFs(mongoose.connection.db, mongoose.mongo);
-  const filename = `${req.params.file_name}.mp3`;
+const _getPodcastDuration = async (path) => {
+  const duration = promisify(mp3Duration);
+  const podcastDuration = await duration(path);
 
-  gfs.findOne({ filename }, (err, file) => {
-    if (err || !file) {
-      return res.status(404).json({ message: 'Podcast not found.' });
-    }
-
-    const podcastReadStream = gfs.createReadStream({
-      filename: file.filename,
-    });
-
-    podcastReadStream.on('open', () => podcastReadStream.pipe(res));
-
-    podcastReadStream.on('error', error => res.status(500).json({ error }));
-  });
+  return podcastDuration;
 };
 
-exports.listen = (req, res) => {
-  const gfs = GridFs(mongoose.connection.db, mongoose.mongo);
-  const filename = `${req.params.file_name}.mp3`;
+exports.create = async (req, res) => {
+  const tempPath = `${__dirname.replace(/^(.*\/src)(.*)$/, '$1')}/temp`;
+  const [fileName] = await fs.promises.readdir(tempPath);
+  const filePath = `${tempPath}/${fileName}`;
 
-  gfs.findOne({ filename }, (err, file) => {
-    if (err || !file) {
-      return res.status(404).json({ message: 'Podcast not found.' });
-    }
+  const duration = await _getPodcastDuration(filePath);
 
-    const { range } = req.headers;
-    const { length } = file;
-
-    const startChunk = Number(
-      (range || '').replace(/bytes=/, '').split('-')[0],
-    );
-    const endChunk = length - 1;
-    const chunkSize = endChunk - startChunk + 1;
-
-    res.set({
-      'Content-Range': `bytes ${startChunk}-${endChunk}/${length}`,
-      'Content-Length': chunkSize,
-      'Content-Type': 'audio/mpeg',
-      'Accept-Ranges': 'bytes',
-    });
-
-    res.status(206);
-
-    const podcastReadStream = gfs.createReadStream({
-      filename: file.filename,
-      range: {
-        startPos: startChunk,
-        endPos: endChunk,
-      },
-    });
-
-    podcastReadStream.on('open', () => {
-      console.log('OPEN');
-      podcastReadStream.pipe(res);
-    });
-
-    podcastReadStream.on('data', chunk => console.log(chunk));
-
-    podcastReadStream.on('error', (streamErr) => {
-      console.log(streamErr);
-      res.status(500).end(streamErr);
-    });
-  });
+  _handlePersistPodcastFile(fileName, filePath);
 };
