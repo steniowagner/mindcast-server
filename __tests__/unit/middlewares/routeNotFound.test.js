@@ -4,7 +4,7 @@ const routeNotFound = require('../../../src/middlewares/routeNotFound');
 const app = require('../../../src/app');
 
 describe('testing the route-not-found middleware', () => {
-  it('should call a next function passing a error as parameter', (done) => {
+  it('should call a next function passing an error as parameter', (done) => {
     const next = jest.fn();
 
     const error = new Error('Route Not Found');
