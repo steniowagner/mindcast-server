@@ -18,7 +18,7 @@ describe('testing the getPodcastDuration middleware', () => {
   });
 
   it('should call next after set duration of the file on res.locals', async (done) => {
-    res.locals.filePath = `${__dirname}/audio-test/test-audio-file.mp3`;
+    res.locals.filePath = `${__dirname}/audio-test/test.mp3`;
 
     await getPodcastDuration(null, res, next);
 

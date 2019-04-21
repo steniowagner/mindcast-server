@@ -1,13 +1,5 @@
+const checkCategoriesValid = require('../utils/checkCategoriesValid');
 const mongoose = require('../db');
-
-const typesCategory = [
-  'science',
-  'technology',
-  'philosofy',
-  'literature',
-  'pop-culture',
-  'history',
-];
 
 const AuthorSchema = new mongoose.Schema(
   {
@@ -42,19 +34,7 @@ const AuthorSchema = new mongoose.Schema(
   { versionKey: false },
 );
 
-AuthorSchema.path('categories').validate((categories) => {
-  if (!categories || categories.length === 0) {
-    return false;
-  }
-
-  for (let i = 0; i < categories.length; i++) {
-    if (!typesCategory.includes(categories[i])) {
-      return false;
-    }
-  }
-
-  return true;
-});
+AuthorSchema.path('categories').validate(categories => checkCategoriesValid(categories));
 
 AuthorSchema.set('toJSON', {
   transform(doc, returned) {

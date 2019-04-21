@@ -1,3 +1,4 @@
+const checkCategoriesValid = require('../utils/checkCategoriesValid');
 const mongoose = require('../db');
 
 const PodcastSchema = mongoose.Schema({
@@ -5,18 +6,6 @@ const PodcastSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     required: true,
     ref: 'Author',
-  },
-  category: {
-    type: String,
-    required: true,
-    enum: [
-      'science',
-      'technology',
-      'philosofy',
-      'literature',
-      'pop-culture',
-      'history',
-    ],
   },
   title: {
     type: String,
