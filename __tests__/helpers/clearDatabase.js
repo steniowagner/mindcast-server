@@ -1,5 +1,3 @@
 const mongoose = require('mongoose');
 
-module.exports = async () => {
-  await mongoose.connection.dropDatabase();
-};
+module.exports = async () => mongoose.connection.dropDatabase();
