@@ -5,6 +5,7 @@ const PodcastController = require('../controllers/PodcastController');
 const AuthorController = require('../controllers/AuthorController');
 
 const setMetadataPodcastUploaded = require('../middlewares/podcast/setMetadataPodcastUploaded');
+const persistPodcastFileGridFS = require('../middlewares/podcast/persistPodcastFileGridFS');
 const getPodcastDuration = require('../middlewares/podcast/getPodcastDuration');
 
 const router = express.Router();
@@ -19,6 +20,7 @@ router.post(
   '/:id/podcasts',
   setMetadataPodcastUploaded,
   getPodcastDuration,
+  persistPodcastFileGridFS,
   PodcastController.create,
 );
 

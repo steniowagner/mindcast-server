@@ -17,8 +17,8 @@ describe('testing the getPodcastDuration middleware', () => {
     next.mockClear();
   });
 
-  it('should set duration of the file on res.locals and call next', async (done) => {
-    res.locals.filePath = `${__dirname}/audio-test-files/test`;
+  it('should call next after set duration of the file on res.locals', async (done) => {
+    res.locals.filePath = `${__dirname}/audio-test/test-audio-file.mp3`;
 
     await getPodcastDuration(null, res, next);
 
