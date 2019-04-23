@@ -3,11 +3,13 @@ const mongoose = require('../db');
 
 const AuthorSchema = new mongoose.Schema(
   {
-    podcasts: {
-      type: [mongoose.Schema.Types.ObjectId],
-      default: [],
-      ref: 'Podcast',
-    },
+    podcasts: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Podcast',
+        default: [],
+      },
+    ],
     categories: [
       {
         type: String,

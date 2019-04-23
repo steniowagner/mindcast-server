@@ -1,3 +1,4 @@
+const handleControllerError = require('../utils/handleControllerError');
 const AuthorDAO = require('../dao/AuthorDAO');
 
 exports.create = async (req, res, next) => {
@@ -11,19 +12,11 @@ exports.create = async (req, res, next) => {
       })
       .send();
   } catch (err) {
-    err.status = 500;
-
-    const hasFieldErrors = Object.keys(err.errors).length > 0;
-
-    if (hasFieldErrors) {
-      err.status = 400;
-    }
-
-    next(err);
+    handleControllerError(err, next);
   }
 };
 
-exports.read = async (req, res, next) => {
+exports.read = async (_req, res, next) => {
   try {
     const authors = await AuthorDAO.read();
 

@@ -1,12 +1,14 @@
+const path = require('path');
 const fs = require('fs');
 
-module.exports = async (req, res, next) => {
+module.exports = (req, res, next) => {
   try {
-    const tempPath = `${__dirname.replace(/^(.*\/src)(.*)$/, '$1')}/temp`;
-    const [fileName] = await fs.promises.readdir(tempPath);
+    if (!req.file) {
+      return res.status(400).send({ message: 'File is required' });
+    }
 
-    res.locals.filePath = `${tempPath}/${fileName}`;
-    res.locals.fileName = fileName;
+    res.locals.filePath = `${global.__multerDestPath}/${req.file.filename}`;
+    res.locals.fileName = req.file.filename;
 
     next();
   } catch (err) {

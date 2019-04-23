@@ -23,6 +23,6 @@ module.exports = {
   description: faker.lorem.paragraph(),
   imageURL: faker.image.people(),
   title: faker.lorem.paragraph(),
-  name: faker.name.findName(),
   subject: getSubject(),
+  stars: 3.5,
 };

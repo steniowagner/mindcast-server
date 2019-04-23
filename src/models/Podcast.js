@@ -17,7 +17,7 @@ const PodcastSchema = mongoose.Schema({
   },
   imageURL: {
     type: String,
-    requried: true,
+    required: true,
   },
   thumbnailImageURL: {
     type: String,
@@ -29,19 +29,19 @@ const PodcastSchema = mongoose.Schema({
   },
   stars: {
     type: Number,
-    requried: true,
-  },
-  url: {
-    type: String,
-    requried: true,
+    required: true,
   },
   duration: {
     type: String,
-    requried: true,
+    required: true,
   },
-  totalDurationInSeconds: {
+  durationInSeconds: {
     type: Number,
-    requried: true,
+    required: true,
+  },
+  fileName: {
+    type: String,
+    required: true,
   },
 });
 
@@ -51,7 +51,9 @@ PodcastSchema.set('toJSON', {
     const document = JSON.parse(returnedDocument);
 
     document.id = returned._id;
+
     delete document._id;
+    delete document.__v;
 
     return document;
   },

@@ -1,14 +1,4 @@
-const checkIsSameStringField = (firstAuthorField, secondAuthorField) => {
-  if (!firstAuthorField || !secondAuthorField) {
-    return false;
-  }
-
-  const isSameType = typeof firstAuthorField === 'string'
-    && typeof firstAuthorField === typeof secondAuthorField;
-  const isSameValue = firstAuthorField === secondAuthorField;
-
-  return isSameType && isSameValue;
-};
+const checkFieldEquality = require('../checkFieldEquality');
 
 const checkHasSameCategories = (
   firstAuthorCategories,
@@ -48,11 +38,11 @@ const checkIsSameAuthor = (firstAuthor, secondAuthor) => {
     return false;
   }
 
-  keys.forEach((key) => {
-    if (!checkIsSameStringField(firstAuthor[key], secondAuthor[key])) {
+  for (let i = 0; i < keys.length; i++) {
+    if (!checkFieldEquality(firstAuthor[keys[i]], secondAuthor[keys[i]])) {
       return false;
     }
-  });
+  }
 
   return true;
 };
