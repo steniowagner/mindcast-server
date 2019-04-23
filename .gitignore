@@ -38,6 +38,7 @@ build/Release
 # Dependency directories
 node_modules/
 jspm_packages/
+__tests__/temp/
 src/temp/
 
 # TypeScript v1 declaration files

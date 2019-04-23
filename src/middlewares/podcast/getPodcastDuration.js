@@ -1,17 +1,31 @@
-const mp3Duration = require('mp3-duration');
-const { promisify } = require('util');
+module.exports = (_req, res, next) => {
+  const { durationInSeconds } = res.locals;
 
-module.exports = async (_req, res, next) => {
-  try {
-    const { filePath } = res.locals;
+  const currentTime = Math.floor(Number(durationInSeconds));
 
-    const getDuration = promisify(mp3Duration);
-    const duration = await getDuration(filePath);
+  const currentTimeInMinutes = Math.floor(currentTime / 60);
+  const currentTimeInSeconds = currentTime % 60;
 
-    res.locals.duration = duration;
+  let minutes = '00';
+  let seconds = '00';
 
-    next();
-  } catch (err) {
-    next(err);
+  if (currentTimeInMinutes > 9) {
+    minutes = currentTimeInMinutes;
   }
+
+  if (currentTimeInMinutes >= 1 && currentTimeInMinutes <= 9) {
+    minutes = `0${currentTimeInMinutes}`;
+  }
+
+  if (currentTimeInSeconds > 9 && currentTimeInSeconds <= 59) {
+    seconds = currentTimeInSeconds;
+  }
+
+  if (currentTimeInSeconds >= 1 && currentTimeInSeconds <= 9) {
+    seconds = `0${currentTimeInSeconds}`;
+  }
+
+  res.locals.duration = `${minutes}:${seconds}`;
+
+  next();
 };

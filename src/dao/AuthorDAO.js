@@ -15,7 +15,7 @@ exports.create = async (data) => {
 
 exports.read = async () => {
   try {
-    return await Author.find();
+    return await Author.find().populate('podcasts');
   } catch (err) {
     throw err;
   }
@@ -23,7 +23,7 @@ exports.read = async () => {
 
 exports.readById = async (id) => {
   try {
-    return await Author.findById(id);
+    return await Author.findById(id).populate('podcasts');
   } catch (err) {
     throw err;
   }

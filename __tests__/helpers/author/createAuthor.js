@@ -8,9 +8,9 @@ const Author = mongoose.model('Author');
 
 const createSingleAuthor = () => Author.create(fakeAuthor);
 
-const createMultipleAuthors = async () => {
+const createMultipleAuthors = async (numberOfAuthors) => {
   const authors = await Promise.all(
-    Array(5)
+    Array(numberOfAuthors)
       .fill({})
       .map(() => createSingleAuthor()),
   );
