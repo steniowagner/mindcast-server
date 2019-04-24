@@ -10,8 +10,6 @@ describe('testing the getPodcastDuration middleware', () => {
 
   beforeEach(() => {
     res.locals.durationInSeconds = null;
-
-    next.mockClear();
   });
 
   it('should set res.locals.duration and call next function - 01', () => {

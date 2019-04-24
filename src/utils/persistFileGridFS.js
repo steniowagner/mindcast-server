@@ -17,7 +17,6 @@ module.exports = (fileName, filePath) => {
     const gfs = GridFs(connection.db, mongo);
 
     const writestream = gfs.createWriteStream({
-      root: 'podcasts_uploaded',
       filename: fileName,
     });
 

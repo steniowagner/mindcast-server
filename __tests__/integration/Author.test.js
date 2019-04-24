@@ -1,5 +1,6 @@
+const binaryParser = require('superagent-binary-parser');
 const request = require('supertest');
-const mongoose = require('mongoose');
+const fs = require('fs');
 
 const checkIsSamePodcast = require('../helpers/podcast/checkIsSamePodcast');
 const AuthorController = require('../../src/controllers/AuthorController');
@@ -16,6 +17,8 @@ const {
 } = require('../helpers/author/createAuthor');
 
 describe('Testing Author Routes', () => {
+  const next = jest.fn();
+
   afterEach(async (done) => {
     await clearDatabase();
 
@@ -101,8 +104,6 @@ describe('Testing Author Routes', () => {
     });
 
     it('should throw an exception when some internal error occurs and call next passing this exception as parameter', async (done) => {
-      const next = jest.fn();
-
       await AuthorController.read(null, null, next);
 
       expect(next).toHaveBeenCalledTimes(1);
@@ -348,6 +349,74 @@ describe('Testing Author Routes', () => {
       expect(typeof body.message).toBe('string');
       expect(body).toHaveProperty('message', 'File is required');
       expect(body.podcast).toBeUndefined();
+
+      done();
+    });
+  });
+
+  describe('GET /authors/:id/podcasts/:fileName/download', () => {
+    it('should stream the podcast file for download', async (done) => {
+      const destination = `${__dirname.replace(
+        /^(.*\/__tests__)(.*)$/,
+        '$1',
+      )}/download.mp3`;
+      const fileStream = fs.createWriteStream(destination);
+      const author = await createSingleAuthor();
+
+      const { body } = await request(app)
+        .post(`/mind-cast/api/v1/authors/${author.id}/podcasts`)
+        .field('thumbnailImageURL', fakePodcast.thumbnailImageURL)
+        .field('description', fakePodcast.description)
+        .field('imageURL', fakePodcast.imageURL)
+        .field('subject', fakePodcast.subject)
+        .field('title', fakePodcast.title)
+        .field('stars', fakePodcast.stars)
+        .attach(
+          'file',
+          `${__dirname.replace(/^(.*\/__tests__)(.*)$/, '$1')}/test.mp3`,
+        );
+
+      const responseStream = request(app)
+        .get(`/mind-cast/api/v1/podcasts/${body.podcast.fileName}/download`)
+        .parse(binaryParser)
+        .buffer();
+
+      responseStream.pipe(fileStream);
+
+      responseStream.on('end', () => {
+        const { status } = responseStream.response;
+
+        expect(fileStream.bytesWritten).toBeGreaterThan(0);
+        expect(status).toBe(200);
+
+        fs.unlinkSync(destination);
+
+        done();
+      });
+    });
+
+    it("should return a 404 HTTP status code with a error message when the podcast doesn't exist", async (done) => {
+      const author = await createSingleAuthor();
+
+      await request(app)
+        .post(`/mind-cast/api/v1/authors/${author.id}/podcasts`)
+        .field('thumbnailImageURL', fakePodcast.thumbnailImageURL)
+        .field('description', fakePodcast.description)
+        .field('imageURL', fakePodcast.imageURL)
+        .field('subject', fakePodcast.subject)
+        .field('title', fakePodcast.title)
+        .field('stars', fakePodcast.stars)
+        .attach(
+          'file',
+          `${__dirname.replace(/^(.*\/__tests__)(.*)$/, '$1')}/test.mp3`,
+        );
+
+      const { status, body } = await request(app).get(
+        '/mind-cast/api/v1/podcasts/doesnt-exist/download',
+      );
+
+      expect(status).toBe(404);
+      expect(body).toHaveProperty('message', 'Podcast not found.');
 
       done();
     });

@@ -12,8 +12,6 @@ describe('testing the getPodcastDurationInSeconds middleware', () => {
   beforeEach(() => {
     res.locals = {};
     res.status = null;
-
-    next.mockClear();
   });
 
   it('should call next after set duration of the file on res.locals', async (done) => {
