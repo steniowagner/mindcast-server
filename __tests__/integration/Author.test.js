@@ -16,6 +16,11 @@ const {
   createSingleAuthor,
 } = require('../helpers/author/createAuthor');
 
+const {
+  createMultiplesPodcasts,
+  createSinglePodcast,
+} = require('../helpers/podcast/createPodcast');
+
 describe('Testing Author Routes', () => {
   const next = jest.fn();
 
@@ -71,7 +76,7 @@ describe('Testing Author Routes', () => {
   });
 
   describe('GET in /authors', () => {
-    it("should return an empty array when theres's no authors recorded", async (done) => {
+    it("should return an empty array when theres's no authors saved", async (done) => {
       const { status, body } = await request(app).get(
         '/mind-cast/api/v1/authors',
       );
@@ -84,7 +89,7 @@ describe('Testing Author Routes', () => {
       done();
     });
 
-    it('should return all the Authors recorded', async (done) => {
+    it('should return all the Authors saved', async (done) => {
       const authors = await createMultipleAuthors(5);
 
       const { status, body } = await request(app).get(
@@ -354,7 +359,43 @@ describe('Testing Author Routes', () => {
     });
   });
 
-  describe('GET /authors/:id/podcasts/:fileName/download', () => {
+  describe('GET /podcasts', () => {
+    it('should return all podcasts saved', async (done) => {
+      const author = await createSingleAuthor();
+
+      const podcasts = await createMultiplesPodcasts(5, author.id);
+
+      const { status, body } = await request(app).get(
+        '/mind-cast/api/v1/podcasts',
+      );
+
+      expect(status).toBe(200);
+      expect(body).toHaveProperty('podcasts');
+      expect(Array.isArray(body.podcasts)).toBe(true);
+      expect(body.podcasts.length).toBe(5);
+
+      for (let i = 0; i < podcasts.length; i++) {
+        expect(checkIsSamePodcast(body.podcasts[i], podcasts[i])).toBe(true);
+      }
+
+      done();
+    });
+
+    it("should return an empty array when there's no podcasts saved", async (done) => {
+      const { status, body } = await request(app).get(
+        '/mind-cast/api/v1/podcasts',
+      );
+
+      expect(status).toBe(200);
+      expect(body).toHaveProperty('podcasts');
+      expect(Array.isArray(body.podcasts)).toBe(true);
+      expect(body.podcasts.length).toBe(0);
+
+      done();
+    });
+  });
+
+  describe('GET /podcasts/:fileName/download', () => {
     it('should stream the podcast file for download', async (done) => {
       const destination = `${__dirname.replace(
         /^(.*\/__tests__)(.*)$/,

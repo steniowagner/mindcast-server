@@ -12,3 +12,11 @@ exports.create = async (data) => {
     throw err;
   }
 };
+
+exports.read = async () => {
+  try {
+    return await Podcast.find().populate('author');
+  } catch (err) {
+    throw err;
+  }
+};
