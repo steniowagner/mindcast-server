@@ -32,8 +32,6 @@ describe('testing the error-handler middleware', () => {
         this.data = payload;
       },
     };
-
-    next.mockClear();
   });
 
   it('should handle a default Internal Error', (done) => {

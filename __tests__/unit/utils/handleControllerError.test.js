@@ -7,8 +7,6 @@ describe('Testing handleControllerError', () => {
   beforeEach(() => {
     err.status = {};
     err.errors = {};
-
-    next.mockClear();
   });
 
   it('should set status code for 400 and call next once', () => {

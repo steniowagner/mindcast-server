@@ -10,8 +10,6 @@ describe('Testing the setMetadataPodcastUploaded', () => {
     res.status = null;
 
     req = {};
-
-    next.mockClear();
   });
 
   it('should call next after set the temporary path and the name of the file uploaded', () => {

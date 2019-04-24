@@ -1318,11 +1318,6 @@ dedent@^0.7.0:
   resolved "https://registry.yarnpkg.com/dedent/-/dedent-0.7.0.tgz#2495ddbaf6eb874abb0e1be9df22d2e5a544326c"
   integrity sha1-JJXduvbrh0q7Dhvp3yLS5aVEMmw=
 
-deep-equal@0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/deep-equal/-/deep-equal-0.2.1.tgz#fad7a793224cbf0c3c7786f92ef780e4fc8cc878"
-  integrity sha1-+tenkyJMvww8d4b5LveA5PyMyHg=
-
 deep-extend@^0.6.0:
   version "0.6.0"
   resolved "https://registry.yarnpkg.com/deep-extend/-/deep-extend-0.6.0.tgz#c4fa7c95404a17a9c3e8ca7e1537312b736330ac"
@@ -2003,13 +1998,6 @@ file-entry-cache@^5.0.1:
   dependencies:
     flat-cache "^2.0.1"
 
-filereader-stream@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/filereader-stream/-/filereader-stream-0.2.0.tgz#16374a202715b640b666ecffd07089938e9ff11f"
-  integrity sha1-FjdKICcVtkC2Zuz/0HCJk46f8R8=
-  dependencies:
-    inherits "1.0.0"
-
 fileset@^2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/fileset/-/fileset-2.0.3.tgz#8e7548a96d3cc2327ee5e674168723a333bba2a0"
@@ -2192,11 +2180,6 @@ get-caller-file@^1.0.1:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/get-caller-file/-/get-caller-file-1.0.3.tgz#f978fa4c90d1dfe7ff2d6beda2a515e713bdcf4a"
   integrity sha512-3t6rVToeoZfYSGd8YoLFR2DJkiQrIiUrGcjvFX2mDw3bn6k2OtwHN0TNCLbBO+w8qTvimhDkv+LSscbJY1vE6w==
-
-get-mp3-duration@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/get-mp3-duration/-/get-mp3-duration-1.0.0.tgz#471efca0f9e4930e7866016f6078582f4ce934cb"
-  integrity sha1-Rx78oPnkkw54ZgFvYHhYL0zpNMs=
 
 get-own-enumerable-property-symbols@^3.0.0:
   version "3.0.0"
@@ -2549,11 +2532,6 @@ inflight@^1.0.4:
   dependencies:
     once "^1.3.0"
     wrappy "1"
-
-inherits@1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/inherits/-/inherits-1.0.0.tgz#38e1975285bf1f7ba9c84da102bb12771322ac48"
-  integrity sha1-OOGXUoW/H3upyE2hArsSdxMirEg=
 
 inherits@2, inherits@2.0.3, inherits@^2.0.3, inherits@~2.0.1, inherits@~2.0.3:
   version "2.0.3"
@@ -4075,17 +4053,6 @@ multer@^1.4.1:
     on-finished "^2.3.0"
     type-is "^1.6.4"
     xtend "^4.0.0"
-
-musicmetadata@^2.0.5:
-  version "2.0.5"
-  resolved "https://registry.yarnpkg.com/musicmetadata/-/musicmetadata-2.0.5.tgz#7ae910d99fbaee05f2bd543aef10b6fbe1f37bd4"
-  integrity sha1-eukQ2Z+67gXyvVQ67xC2++Hze9Q=
-  dependencies:
-    deep-equal "0.2.1"
-    filereader-stream "^0.2.0"
-    is-stream "^1.1.0"
-    strtok2 "~1.0.0"
-    through "~2.3.4"
 
 mute-stream@0.0.7:
   version "0.0.7"
@@ -5661,10 +5628,10 @@ strip-json-comments@^2.0.1, strip-json-comments@~2.0.1:
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
   integrity sha1-PFMZQukIwml8DsNEhYwobHygpgo=
 
-strtok2@~1.0.0:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/strtok2/-/strtok2-1.0.4.tgz#df9ffb2e70a3336b4660e267ef0547e610275fc1"
-  integrity sha1-35/7LnCjM2tGYOJn7wVH5hAnX8E=
+superagent-binary-parser@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/superagent-binary-parser/-/superagent-binary-parser-1.0.1.tgz#e5fd0aa95960fab05d7f797757331d26afa7f79d"
+  integrity sha1-5f0KqVlg+rBdf3l3VzMdJq+n950=
 
 superagent@^3.8.3:
   version "3.8.3"
@@ -5798,7 +5765,7 @@ throat@^4.0.0:
   resolved "https://registry.yarnpkg.com/throat/-/throat-4.1.0.tgz#89037cbc92c56ab18926e6ba4cbb200e15672a6a"
   integrity sha1-iQN8vJLFarGJJua6TLsgDhVnKmo=
 
-through@^2.3.6, through@~2.3.4:
+through@^2.3.6:
   version "2.3.8"
   resolved "https://registry.yarnpkg.com/through/-/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
   integrity sha1-DdTJ/6q8NXlgsbckEV1+Doai4fU=
