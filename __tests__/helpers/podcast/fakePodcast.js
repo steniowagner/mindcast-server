@@ -25,4 +25,7 @@ module.exports = {
   title: faker.lorem.paragraph(),
   subject: getSubject(),
   stars: 3.5,
+  duration: '01:11',
+  durationInSeconds: 71,
+  fileName: 'filename',
 };
