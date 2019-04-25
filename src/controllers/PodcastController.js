@@ -7,24 +7,78 @@ const { connection, mongo } = require('../db');
 const PodcastDAO = require('../dao/PodcastDAO');
 const AuthorDAO = require('../dao/AuthorDAO');
 
-exports.download = (req, res, next) => {
-  const gfs = GridFs(connection.db, mongo);
+exports.listen = async (req, res, next) => {
+  try {
+    const gfs = GridFs(connection.db, mongo);
+    const { id } = req.params;
 
-  gfs.findOne({ filename: req.params.fileName }, (err, file) => {
-    if (err || !file) {
+    const podcast = await PodcastDAO.readById(id);
+
+    if (!podcast) {
       return res.status(404).json({ message: 'Podcast not found.' });
     }
 
-    const podcastReadStream = gfs.createReadStream({
-      filename: file.filename,
+    gfs.findOne({ filename: podcast.fileName }, (err, file) => {
+      const { range } = req.headers;
+      const { length } = file;
+
+      const startChunk = Number(
+        (range || '').replace(/bytes=/, '').split('-')[0],
+      );
+
+      const endChunk = length - 1;
+      const chunkSize = endChunk - startChunk + 1;
+
+      res.set({
+        'Content-Range': `bytes ${startChunk}-${endChunk}/${length}`,
+        'Content-Length': chunkSize,
+        'Content-Type': 'audio/mpeg',
+        'Accept-Ranges': 'bytes',
+      });
+
+      res.status(206);
+
+      const podcastReadStream = gfs.createReadStream({
+        filename: file.filename,
+        range: {
+          startPos: startChunk,
+          endPos: endChunk,
+        },
+      });
+
+      podcastReadStream.on('open', () => podcastReadStream.pipe(res));
     });
+  } catch (err) {
+    next(err);
+  }
+};
 
-    podcastReadStream.on('open', () => podcastReadStream.pipe(res));
+exports.download = async (req, res, next) => {
+  try {
+    const { id } = req.params;
 
-    podcastReadStream.on('end', () => res.end());
+    const podcast = await PodcastDAO.readById(id);
 
-    podcastReadStream.on('error', error => next(error));
-  });
+    if (!podcast) {
+      return res.status(404).json({ message: 'Podcast not found.' });
+    }
+
+    const gfs = GridFs(connection.db, mongo);
+
+    gfs.findOne({ filename: podcast.fileName }, (err, file) => {
+      const podcastReadStream = gfs.createReadStream({
+        filename: file.filename,
+      });
+
+      podcastReadStream.on('open', () => podcastReadStream.pipe(res));
+
+      podcastReadStream.on('end', () => res.end());
+
+      podcastReadStream.on('error', error => next(error));
+    });
+  } catch (err) {
+    next(err);
+  }
 };
 
 exports.create = async (req, res, next) => {

@@ -9,6 +9,7 @@ module.exports = {
   coveragePathIgnorePatterns: [
     '/node_modules/',
     '<rootDir>/src/bin',
+    '<rootDir>/src/dao',
     '<rootDir>/src/config',
     '<rootDir>/src/app.js',
   ],
