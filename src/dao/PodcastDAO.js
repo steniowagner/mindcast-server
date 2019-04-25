@@ -20,3 +20,11 @@ exports.read = async () => {
     throw err;
   }
 };
+
+exports.readById = async (id) => {
+  try {
+    return await Podcast.findById(id).populate('author');
+  } catch (err) {
+    throw err;
+  }
+};

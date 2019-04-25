@@ -395,6 +395,48 @@ describe('Testing Author Routes', () => {
     });
   });
 
+  describe('GET /podcasts/:id', () => {
+    it('should return the podcast with the id received', async (done) => {
+      const author = await createSingleAuthor();
+      const podcast = await createSinglePodcast(author);
+
+      const { status, body } = await request(app).get(
+        `/mind-cast/api/v1/podcasts/${podcast.id}`,
+      );
+
+      expect(status).toBe(200);
+      expect(body).toHaveProperty('podcast');
+      expect(checkIsSamePodcast(body.podcast, podcast)).toBe(true);
+      expect(body.podcast.author.id).toBe(author.id);
+
+      done();
+    });
+
+    it('should return an error message and 500 HTTP status code if the id is out of mongodb pattern', async (done) => {
+      const { status, body } = await request(app).get(
+        '/mind-cast/api/v1/podcasts/not-exist',
+      );
+
+      expect(status).toBe(500);
+      expect(body.podcast).toBeUndefined();
+      expect(body).toHaveProperty('message');
+
+      done();
+    });
+
+    it("should return an error message and 404 HTTP status code if author doesn't exist", async (done) => {
+      const { status, body } = await request(app).get(
+        '/mind-cast/api/v1/podcasts/123456789987654321123456',
+      );
+
+      expect(status).toBe(404);
+      expect(body.podcast).toBeUndefined();
+      expect(body).toHaveProperty('message', 'Podcast not found.');
+
+      done();
+    });
+  });
+
   describe('GET /podcasts/:fileName/download', () => {
     it('should stream the podcast file for download', async (done) => {
       const destination = `${__dirname.replace(

@@ -78,3 +78,25 @@ exports.read = async (_req, res, next) => {
     next(err);
   }
 };
+
+exports.readById = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const podcast = await PodcastDAO.readById(id);
+
+    if (!podcast) {
+      return res
+        .status(404)
+        .json({ message: 'Podcast not found.' })
+        .send();
+    }
+
+    return res
+      .status(200)
+      .json({ podcast })
+      .send();
+  } catch (err) {
+    next(err);
+  }
+};
