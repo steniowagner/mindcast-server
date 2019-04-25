@@ -437,7 +437,7 @@ describe('Testing Author Routes', () => {
     });
   });
 
-  describe('GET /podcasts/:fileName/download', () => {
+  describe('GET /podcasts/:id/download', () => {
     it('should stream the podcast file for download', async (done) => {
       const destination = `${__dirname.replace(
         /^(.*\/__tests__)(.*)$/,
@@ -460,7 +460,7 @@ describe('Testing Author Routes', () => {
         );
 
       const responseStream = request(app)
-        .get(`/mind-cast/api/v1/podcasts/${body.podcast.fileName}/download`)
+        .get(`/mind-cast/api/v1/podcasts/${body.podcast.id}/download`)
         .parse(binaryParser)
         .buffer();
 
@@ -478,10 +478,36 @@ describe('Testing Author Routes', () => {
       });
     });
 
+    it("should return a 500 HTTP status code if the id isn't in mongodb default", async (done) => {
+      const { status, body } = await request(app).get(
+        '/mind-cast/api/v1/podcasts/xyz/download',
+      );
+
+      expect(status).toBe(500);
+      expect(body.author).toBeUndefined();
+      expect(body).toHaveProperty('message');
+
+      done();
+    });
+
     it("should return a 404 HTTP status code with a error message when the podcast doesn't exist", async (done) => {
+      const { status, body } = await request(app).get(
+        '/mind-cast/api/v1/podcasts/123456789987654321123456/download',
+      );
+
+      expect(status).toBe(404);
+      expect(body).toHaveProperty('message', 'Podcast not found.');
+      expect(body.podcast).toBeUndefined();
+
+      done();
+    });
+  });
+
+  describe('GET /podcasts/:id/listen', () => {
+    it('should stream a podcast file', async (done) => {
       const author = await createSingleAuthor();
 
-      await request(app)
+      const createPodcastResponse = await request(app)
         .post(`/mind-cast/api/v1/authors/${author.id}/podcasts`)
         .field('thumbnailImageURL', fakePodcast.thumbnailImageURL)
         .field('description', fakePodcast.description)
@@ -494,12 +520,39 @@ describe('Testing Author Routes', () => {
           `${__dirname.replace(/^(.*\/__tests__)(.*)$/, '$1')}/test.mp3`,
         );
 
+      const { status, header } = await request(app).get(
+        `/mind-cast/api/v1/podcasts/${
+          createPodcastResponse.body.podcast.id
+        }/listen`,
+      );
+
+      expect(status).toBe(206);
+      expect(header).toHaveProperty('content-type', 'audio/mpeg');
+      expect(header).toHaveProperty('accept-ranges', 'bytes');
+
+      done();
+    });
+
+    it("should return a 404 HTTP status code when the Podcast doens't exist", async (done) => {
       const { status, body } = await request(app).get(
-        '/mind-cast/api/v1/podcasts/doesnt-exist/download',
+        '/mind-cast/api/v1/podcasts/123456789987654321123456/listen',
       );
 
       expect(status).toBe(404);
       expect(body).toHaveProperty('message', 'Podcast not found.');
+      expect(body.podcast).toBeUndefined();
+
+      done();
+    });
+
+    it("should return a 500 HTTP status code if the id isn't in mongodb default", async (done) => {
+      const { status, body } = await request(app).get(
+        '/mind-cast/api/v1/podcasts/xyz/listen',
+      );
+
+      expect(status).toBe(500);
+      expect(body.author).toBeUndefined();
+      expect(body).toHaveProperty('message');
 
       done();
     });

@@ -24,6 +24,4 @@ router.post(
   PodcastController.create,
 );
 
-router.get('/:id/podcasts/:fileName/download', PodcastController.download);
-
 module.exports = router;
