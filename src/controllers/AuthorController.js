@@ -102,3 +102,24 @@ exports.delete = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.filterByName = async (req, res, next) => {
+  try {
+    const { name } = req.query;
+
+    if (!name) {
+      return res
+        .status(400)
+        .send({ message: "The filter 'name' is required." });
+    }
+
+    const authors = await AuthorDAO.filterByName(name);
+
+    return res
+      .status(200)
+      .json({ authors })
+      .send();
+  } catch (err) {
+    next(err);
+  }
+};

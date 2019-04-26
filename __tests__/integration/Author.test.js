@@ -119,6 +119,64 @@ describe('Testing Author Routes', () => {
     });
   });
 
+  describe('GET in /authors/filter', () => {
+    it('should return the authors that matches with the given name', async (done) => {
+      const author = await createSingleAuthor();
+
+      const { body, status } = await request(app).get(
+        `/mind-cast/api/v1/authors/filter?name=${author.name}`,
+      );
+
+      expect(status).toBe(200);
+      expect(body).toHaveProperty('authors');
+      expect(Array.isArray(body.authors)).toBe(true);
+      expect(body.authors.length).toBe(1);
+      expect(checkIsSameAuthor(body.authors[0], author)).toBe(true);
+
+      done();
+    });
+
+    it("should return an empty array when there's no authors saved", async (done) => {
+      const { body, status } = await request(app).get(
+        '/mind-cast/api/v1/authors/filter?name=stenio',
+      );
+
+      expect(status).toBe(200);
+      expect(body).toHaveProperty('authors');
+      expect(Array.isArray(body.authors)).toBe(true);
+      expect(body.authors.length).toBe(0);
+
+      done();
+    });
+
+    it("should return a 400 HTTP code with an error message if the filter 'name' is missed", async (done) => {
+      const author = await createSingleAuthor();
+
+      const { body, status } = await request(app).get(
+        `/mind-cast/api/v1/authors/filter?other=${author.name}`,
+      );
+
+      expect(status).toBe(400);
+      expect(body).toHaveProperty('message', "The filter 'name' is required.");
+      expect(body.author).toBeUndefined();
+
+      done();
+    });
+
+    it('should return a 500 HTTP status code if some internal error occurs and call next', async (done) => {
+      const req = {
+        name: 'stenio',
+      };
+
+      const res = await AuthorController.filterByName(req, null, next);
+
+      expect(next).toHaveBeenCalledTimes(1);
+      expect(next.mock.calls[0][0] instanceof Error).toBe(true);
+
+      done();
+    });
+  });
+
   describe('GET in /authors/:id', () => {
     it('should read and return the author with id equal to id received', async (done) => {
       await createMultipleAuthors();
