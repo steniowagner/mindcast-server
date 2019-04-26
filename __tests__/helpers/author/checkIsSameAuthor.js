@@ -23,6 +23,7 @@ const checkHasSameCategories = (
 const checkIsSameAuthor = (firstAuthor, secondAuthor) => {
   const keys = Object.keys(firstAuthor).filter(
     key => key !== 'categories'
+      && key !== 'relatedAuthors'
       && key !== 'podcasts'
       && key !== '__v'
       && key !== '_id'

@@ -1,4 +1,5 @@
 const handleControllerError = require('../utils/handleControllerError');
+const shuffleArray = require('../utils/shuffleArray');
 const AuthorDAO = require('../dao/AuthorDAO');
 
 exports.create = async (req, res, next) => {
@@ -44,9 +45,26 @@ exports.readById = async (req, res, next) => {
         .send();
     }
 
+    const authorsFilteredByCategory = await AuthorDAO.filterByCategory(
+      author.categories,
+      author.id,
+    );
+
+    const newReleases = shuffleArray(author.podcasts).slice(0, 5);
+    const featured = shuffleArray(author.podcasts).slice(0, 5);
+
+    const result = {
+      ...author._doc,
+      podcasts: {
+        newReleases,
+        featured,
+      },
+      relatedAuthors: shuffleArray(authorsFilteredByCategory).slice(0, 5),
+    };
+
     return res
       .status(200)
-      .json({ author })
+      .json({ author: result })
       .send();
   } catch (err) {
     next(err);
