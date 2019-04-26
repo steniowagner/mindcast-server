@@ -9,8 +9,9 @@ const AuthorController = require('../controllers/AuthorController');
 const router = express.Router();
 
 // CRUD user routes
-router.get('/', AuthorController.read);
+router.get('/filter', AuthorController.filterByName);
 router.get('/:id', AuthorController.readById);
+router.get('/', AuthorController.read);
 router.post('/', AuthorController.create);
 router.patch('/:id', AuthorController.update);
 router.delete('/:id', AuthorController.delete);

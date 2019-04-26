@@ -37,6 +37,14 @@ exports.update = async (id, data) => {
   }
 };
 
+exports.delete = async (id) => {
+  try {
+    return await Author.findByIdAndRemove(id);
+  } catch (err) {
+    throw err;
+  }
+};
+
 exports.filterByCategory = async (items, id) => {
   try {
     const authorsFilteredByCategory = await Author.aggregate()
@@ -57,9 +65,9 @@ exports.filterByCategory = async (items, id) => {
   }
 };
 
-exports.delete = async (id) => {
+exports.filterByName = async (name) => {
   try {
-    return await Author.findByIdAndRemove(id);
+    return await Author.find({ name: new RegExp(name, 'i') });
   } catch (err) {
     throw err;
   }
