@@ -121,6 +121,8 @@ describe('Testing Author Routes', () => {
 
   describe('GET in /authors/:id', () => {
     it('should read and return the author with id equal to id received', async (done) => {
+      await createMultipleAuthors();
+
       const author = await createSingleAuthor();
 
       const { status, body } = await request(app).get(
@@ -132,6 +134,11 @@ describe('Testing Author Routes', () => {
 
       const isSameAuthor = checkIsSameAuthor(body.author, author);
       expect(isSameAuthor).toBe(true);
+
+      expect(body).toHaveProperty('author');
+      expect(body.author.podcasts).toHaveProperty('newReleases');
+      expect(body.author.podcasts).toHaveProperty('featured');
+      expect(body.author).toHaveProperty('relatedAuthors');
 
       done();
     });

@@ -37,6 +37,26 @@ exports.update = async (id, data) => {
   }
 };
 
+exports.filterByCategory = async (items, id) => {
+  try {
+    const authorsFilteredByCategory = await Author.aggregate()
+      .unwind('$categories')
+      .match({
+        categories: { $in: items },
+        _id: { $ne: new mongoose.Types.ObjectId(id) },
+      })
+      .project({ __v: 0 })
+      .group({ _id: '$_id', related: { $first: '$$ROOT' } });
+
+    return authorsFilteredByCategory.map(author => ({
+      ...author.related,
+      id: author.related._id,
+    }));
+  } catch (err) {
+    throw err;
+  }
+};
+
 exports.delete = async (id) => {
   try {
     return await Author.findByIdAndRemove(id);
