@@ -46,13 +46,16 @@ exports.delete = async (id) => {
 };
 
 exports.filterByCategory = async (items, id) => {
+  const matchFilter = { categories: { $in: items } };
+
+  if (id) {
+    matchFilter._id = { $ne: new mongoose.Types.ObjectId(id) };
+  }
+
   try {
     const authorsFilteredByCategory = await Author.aggregate()
       .unwind('$categories')
-      .match({
-        categories: { $in: items },
-        _id: { $ne: new mongoose.Types.ObjectId(id) },
-      })
+      .match(matchFilter)
       .project({ __v: 0 })
       .group({ _id: '$_id', related: { $first: '$$ROOT' } });
 

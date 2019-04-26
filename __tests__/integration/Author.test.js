@@ -2,6 +2,7 @@ const binaryParser = require('superagent-binary-parser');
 const request = require('supertest');
 const fs = require('fs');
 
+const CategoryController = require('../../src/controllers/CategoryController');
 const checkIsSamePodcast = require('../helpers/podcast/checkIsSamePodcast');
 const AuthorController = require('../../src/controllers/AuthorController');
 const checkIsSameAuthor = require('../helpers/author/checkIsSameAuthor');
@@ -322,7 +323,7 @@ describe('Testing Author Routes', () => {
         .field('thumbnailImageURL', fakePodcast.thumbnailImageURL)
         .field('description', fakePodcast.description)
         .field('imageURL', fakePodcast.imageURL)
-        .field('subject', fakePodcast.subject)
+        .field('category', fakePodcast.category)
         .field('title', fakePodcast.title)
         .field('stars', fakePodcast.stars)
         .attach(
@@ -356,7 +357,7 @@ describe('Testing Author Routes', () => {
         .field('thumbnailImageURL', fakePodcast.thumbnailImageURL)
         .field('description', fakePodcast.description)
         .field('imageURL', fakePodcast.imageURL)
-        .field('subject', fakePodcast.subject)
+        .field('category', fakePodcast.category)
         .field('title', fakePodcast.title)
         // .field('stars', fakePodcast.stars)
         .attach(
@@ -384,7 +385,7 @@ describe('Testing Author Routes', () => {
         .field('thumbnailImageURL', fakePodcast.thumbnailImageURL)
         .field('description', fakePodcast.description)
         .field('imageURL', fakePodcast.imageURL)
-        .field('subject', fakePodcast.subject)
+        .field('category', fakePodcast.category)
         .field('title', fakePodcast.title)
         .field('stars', fakePodcast.stars)
         .attach(
@@ -407,7 +408,7 @@ describe('Testing Author Routes', () => {
         .field('thumbnailImageURL', fakePodcast.thumbnailImageURL)
         .field('description', fakePodcast.description)
         .field('imageURL', fakePodcast.imageURL)
-        .field('subject', fakePodcast.subject)
+        .field('category', fakePodcast.category)
         .field('title', fakePodcast.title)
         .field('stars', fakePodcast.stars);
       /* .attach(
@@ -463,7 +464,7 @@ describe('Testing Author Routes', () => {
   describe('GET /podcasts/:id', () => {
     it('should return the podcast with the id received', async (done) => {
       const author = await createSingleAuthor();
-      const podcast = await createSinglePodcast(author);
+      const podcast = await createSinglePodcast(author.id);
 
       const { status, body } = await request(app).get(
         `/mind-cast/api/v1/podcasts/${podcast.id}`,
@@ -516,7 +517,7 @@ describe('Testing Author Routes', () => {
         .field('thumbnailImageURL', fakePodcast.thumbnailImageURL)
         .field('description', fakePodcast.description)
         .field('imageURL', fakePodcast.imageURL)
-        .field('subject', fakePodcast.subject)
+        .field('category', fakePodcast.category)
         .field('title', fakePodcast.title)
         .field('stars', fakePodcast.stars)
         .attach(
@@ -577,7 +578,7 @@ describe('Testing Author Routes', () => {
         .field('thumbnailImageURL', fakePodcast.thumbnailImageURL)
         .field('description', fakePodcast.description)
         .field('imageURL', fakePodcast.imageURL)
-        .field('subject', fakePodcast.subject)
+        .field('category', fakePodcast.category)
         .field('title', fakePodcast.title)
         .field('stars', fakePodcast.stars)
         .attach(
@@ -618,6 +619,90 @@ describe('Testing Author Routes', () => {
       expect(status).toBe(500);
       expect(body.author).toBeUndefined();
       expect(body).toHaveProperty('message');
+
+      done();
+    });
+  });
+
+  describe('Testing the GET /categories/:id route', () => {
+    it('should return the featured podcasts, trending podcasts and the authors related with the category', async (done) => {
+      const author = await createSingleAuthor();
+
+      await createMultiplesPodcasts(5, author.id, { category: 'science' });
+      await createMultiplesPodcasts(5, author.id, { category: 'literature' });
+
+      const { status, body } = await request(app).get(
+        '/mind-cast/api/v1/categories/science',
+      );
+
+      const isSameCategory = podcasts => podcasts.some(podcast => podcast.category !== 'science');
+
+      expect(status).toBe(200);
+      expect(body).toHaveProperty('data');
+
+      expect(body.data).toHaveProperty('featured');
+      expect(Array.isArray(body.data.featured)).toBe(true);
+      expect(body.data.featured.length).toBe(5);
+      expect(isSameCategory(body.data.featured)).toBe(false);
+
+      expect(body.data).toHaveProperty('trending');
+      expect(Array.isArray(body.data.trending)).toBe(true);
+      expect(body.data.trending.length).toBe(5);
+      expect(isSameCategory(body.data.trending)).toBe(false);
+
+      expect(body.data).toHaveProperty('authors');
+      expect(Array.isArray(body.data.authors)).toBe(true);
+      expect(body.data.authors.length).toBe(1);
+
+      done();
+    });
+
+    it("should return the featured podcasts, trending podcasts and the authors empty if there's no podcast or author with the category", async (done) => {
+      const { status, body } = await request(app).get(
+        '/mind-cast/api/v1/categories/science',
+      );
+
+      const isSameCategory = podcasts => podcasts.some(podcast => podcast.category !== 'science');
+
+      expect(status).toBe(200);
+      expect(body).toHaveProperty('data');
+
+      expect(body.data).toHaveProperty('featured');
+      expect(Array.isArray(body.data.featured)).toBe(true);
+      expect(body.data.featured.length).toBe(0);
+
+      expect(body.data).toHaveProperty('trending');
+      expect(Array.isArray(body.data.trending)).toBe(true);
+      expect(body.data.trending.length).toBe(0);
+
+      expect(body.data).toHaveProperty('authors');
+      expect(Array.isArray(body.data.authors)).toBe(true);
+      expect(body.data.authors.length).toBe(0);
+
+      done();
+    });
+
+    it('should return a 400 HTTP status code and an error message', async (done) => {
+      const { status, body } = await request(app).get(
+        '/mind-cast/api/v1/categories/xyz',
+      );
+
+      expect(status).toBe(400);
+      expect(body).toHaveProperty(
+        'message',
+        'Category must be one of: science,technology,philosofy,literature,pop-culture,history.',
+      );
+      expect(body.data).toBeUndefined();
+
+      done();
+    });
+
+    it('should throw an exception when some internal error occurs and call next passing this exception as parameter', async (done) => {
+      await CategoryController.read(null, null, next);
+
+      expect(next).toHaveBeenCalledTimes(1);
+
+      expect(next.mock.calls[0][0] instanceof Error).toBe(true);
 
       done();
     });

@@ -1,6 +1,6 @@
 const faker = require('faker');
 
-const getSubject = () => {
+const getCategory = () => {
   const categories = [
     'science',
     'technology',
@@ -23,7 +23,7 @@ module.exports = {
   description: faker.lorem.paragraph(),
   imageURL: faker.image.people(),
   title: faker.lorem.paragraph(),
-  subject: getSubject(),
+  category: getCategory(),
   stars: 3.5,
   duration: '01:11',
   durationInSeconds: 71,

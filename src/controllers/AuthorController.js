@@ -50,16 +50,13 @@ exports.readById = async (req, res, next) => {
       author.id,
     );
 
-    const newReleases = shuffleArray(author.podcasts).slice(0, 5);
-    const featured = shuffleArray(author.podcasts).slice(0, 5);
-
     const result = {
       ...author._doc,
-      podcasts: {
-        newReleases,
-        featured,
-      },
       relatedAuthors: shuffleArray(authorsFilteredByCategory).slice(0, 5),
+      podcasts: {
+        newReleases: shuffleArray(author.podcasts).slice(0, 5),
+        featured: shuffleArray(author.podcasts).slice(0, 5),
+      },
     };
 
     return res

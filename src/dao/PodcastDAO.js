@@ -28,3 +28,11 @@ exports.readById = async (id) => {
     throw err;
   }
 };
+
+exports.readByCategory = async (category) => {
+  try {
+    return await Podcast.find({ category });
+  } catch (err) {
+    throw err;
+  }
+};

@@ -23,7 +23,7 @@ const PodcastSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  subject: {
+  category: {
     type: String,
     required: true,
   },
