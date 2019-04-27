@@ -8,5 +8,6 @@ router.get('/', (req, res) => res.status(200).send({
 
 router.use('/authors', require('./authors'));
 router.use('/podcasts', require('./podcasts'));
+router.use('/categories', require('./categories'));
 
 module.exports = router;
