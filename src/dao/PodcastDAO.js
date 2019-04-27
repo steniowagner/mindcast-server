@@ -36,3 +36,11 @@ exports.readByCategory = async (category) => {
     throw err;
   }
 };
+
+exports.filterByCategory = async (categories) => {
+  try {
+    return await Podcast.find({ category: { $in: categories } });
+  } catch (err) {
+    throw err;
+  }
+};
