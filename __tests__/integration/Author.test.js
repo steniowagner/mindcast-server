@@ -6,6 +6,7 @@ const CategoryController = require('../../src/controllers/CategoryController');
 const checkIsSamePodcast = require('../helpers/podcast/checkIsSamePodcast');
 const AuthorController = require('../../src/controllers/AuthorController');
 const checkIsSameAuthor = require('../helpers/author/checkIsSameAuthor');
+const HomeController = require('../../src/controllers/HomeController');
 const fakePodcast = require('../helpers/podcast/fakePodcast');
 const fakeAuthor = require('../helpers/author/fakeAuthor');
 const clearDatabase = require('../helpers/clearDatabase');
@@ -682,7 +683,7 @@ describe('Testing Author Routes', () => {
       done();
     });
 
-    it('should return a 400 HTTP status code and an error message', async (done) => {
+    it("should return a 400 HTTP status code and an error message when the category doesn't exist", async (done) => {
       const { status, body } = await request(app).get(
         '/mind-cast/api/v1/categories/xyz',
       );
@@ -699,6 +700,144 @@ describe('Testing Author Routes', () => {
 
     it('should throw an exception when some internal error occurs and call next passing this exception as parameter', async (done) => {
       await CategoryController.read(null, null, next);
+
+      expect(next).toHaveBeenCalledTimes(1);
+
+      expect(next.mock.calls[0][0] instanceof Error).toBe(true);
+
+      done();
+    });
+  });
+
+  describe('Testing the GET /home route', () => {
+    it('should return the hottest podcasts, new releases and trending authors based on the categories inside the query filter', async (done) => {
+      const authors = await createMultipleAuthors(5);
+
+      await createMultiplesPodcasts(5, authors[0].id, { category: 'science' });
+      await createMultiplesPodcasts(5, authors[1].id, {
+        category: 'literature',
+      });
+
+      const { status, body } = await request(app).get(
+        '/mind-cast/api/v1/home?categories=science&technology',
+      );
+
+      expect(status).toBe(200);
+
+      expect(body).toHaveProperty('trendingAuthors');
+      expect(Array.isArray(body.trendingAuthors)).toBe(true);
+      expect(body.trendingAuthors.length).toBe(5);
+
+      expect(body).toHaveProperty('hottestPodcasts');
+      expect(Array.isArray(body.hottestPodcasts)).toBe(true);
+      expect(body.hottestPodcasts.length).toBe(5);
+
+      expect(body).toHaveProperty('newReleases');
+      expect(Array.isArray(body.newReleases)).toBe(true);
+      expect(body.newReleases.length).toBe(5);
+
+      done();
+    });
+
+    it('should return all podcasts and all authors when the filter is equal to $all', async (done) => {
+      const authors = await createMultipleAuthors(5);
+
+      await createMultiplesPodcasts(5, authors[0].id, { category: 'science' });
+      await createMultiplesPodcasts(5, authors[1].id, {
+        category: 'literature',
+      });
+
+      const { status, body } = await request(app).get(
+        '/mind-cast/api/v1/home?categories=$all',
+      );
+
+      expect(status).toBe(200);
+
+      expect(body).toHaveProperty('trendingAuthors');
+      expect(Array.isArray(body.trendingAuthors)).toBe(true);
+      expect(body.trendingAuthors.length).toBe(5);
+
+      expect(body).toHaveProperty('hottestPodcasts');
+      expect(Array.isArray(body.hottestPodcasts)).toBe(true);
+      expect(body.hottestPodcasts.length).toBe(10);
+
+      expect(body).toHaveProperty('newReleases');
+      expect(Array.isArray(body.newReleases)).toBe(true);
+      expect(body.newReleases.length).toBe(10);
+
+      done();
+    });
+
+    it("should return an empty array for hottest podcasts, for new releases and for trending authors if there's nothing recorded", async (done) => {
+      const { status, body } = await request(app).get(
+        '/mind-cast/api/v1/home?categories=science&technology',
+      );
+
+      expect(status).toBe(200);
+
+      expect(body).toHaveProperty('trendingAuthors');
+      expect(Array.isArray(body.trendingAuthors)).toBe(true);
+      expect(body.trendingAuthors.length).toBe(0);
+
+      expect(body).toHaveProperty('hottestPodcasts');
+      expect(Array.isArray(body.hottestPodcasts)).toBe(true);
+      expect(body.hottestPodcasts.length).toBe(0);
+
+      expect(body).toHaveProperty('newReleases');
+      expect(Array.isArray(body.newReleases)).toBe(true);
+      expect(body.newReleases.length).toBe(0);
+
+      done();
+    });
+
+    it("should return one empty array for hottest podcasts, one fornew releases and one for trending authors if the query doens't match with any record", async (done) => {
+      const authors = await createMultipleAuthors(5);
+
+      await createMultiplesPodcasts(5, authors[0].id, { category: 'history' });
+      await createMultiplesPodcasts(5, authors[1].id, { category: 'science' });
+
+      const { status, body } = await request(app).get(
+        '/mind-cast/api/v1/home?categories=literature',
+      );
+
+      expect(status).toBe(200);
+
+      expect(body).toHaveProperty('trendingAuthors');
+      expect(Array.isArray(body.trendingAuthors)).toBe(true);
+      expect(body.trendingAuthors.length).toBe(0);
+
+      expect(body).toHaveProperty('hottestPodcasts');
+      expect(Array.isArray(body.hottestPodcasts)).toBe(true);
+      expect(body.hottestPodcasts.length).toBe(0);
+
+      expect(body).toHaveProperty('newReleases');
+      expect(Array.isArray(body.newReleases)).toBe(true);
+      expect(body.newReleases.length).toBe(0);
+
+      done();
+    });
+
+    it("should return a 400 HTTP status code with an error message if the filter 'categories' is missed", async (done) => {
+      const { body, status } = await request(app).get(
+        '/mind-cast/api/v1/home?other=xyz',
+      );
+
+      expect(status).toBe(400);
+      expect(body).toHaveProperty(
+        'message',
+        "The filter 'categories' is required.",
+      );
+      expect(body.trendingAuthors).toBeUndefined();
+      expect(body.hottestPodcasts).toBeUndefined();
+      expect(body.newReleases).toBeUndefined();
+
+      done();
+    });
+
+    it('should throw an exception when some internal error occurs and call next passing this exception as parameter', async (done) => {
+      const req = { query: { categories: 'some' } };
+
+      await HomeController.read(req, null, next);
 
       expect(next).toHaveBeenCalledTimes(1);
 
