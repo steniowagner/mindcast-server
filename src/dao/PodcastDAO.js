@@ -31,7 +31,7 @@ exports.readById = async (id) => {
 
 exports.readByCategory = async (category) => {
   try {
-    return await Podcast.find({ category });
+    return await Podcast.find({ category }).populate('author');
   } catch (err) {
     throw err;
   }
@@ -39,7 +39,9 @@ exports.readByCategory = async (category) => {
 
 exports.filterByCategory = async (categories) => {
   try {
-    return await Podcast.find({ category: { $in: categories } });
+    return await Podcast.find({ category: { $in: categories } }).populate(
+      'author',
+    );
   } catch (err) {
     throw err;
   }
