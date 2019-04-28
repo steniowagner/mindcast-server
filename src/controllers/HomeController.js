@@ -12,7 +12,7 @@ exports.read = async (req, res, next) => {
         .send({ message: "The filter 'categories' is required." });
     }
 
-    if (categories === '$all') {
+    if (categories === 'all') {
       const podcasts = await PodcastDAO.read();
       const authors = await AuthorDAO.read();
 

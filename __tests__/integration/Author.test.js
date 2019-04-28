@@ -739,7 +739,7 @@ describe('Testing Author Routes', () => {
       done();
     });
 
-    it('should return all podcasts and all authors when the filter is equal to $all', async (done) => {
+    it('should return all podcasts and all authors when the filter is equal to all', async (done) => {
       const authors = await createMultipleAuthors(5);
 
       await createMultiplesPodcasts(5, authors[0].id, { category: 'science' });
@@ -748,7 +748,7 @@ describe('Testing Author Routes', () => {
       });
 
       const { status, body } = await request(app).get(
-        '/mind-cast/api/v1/home?categories=$all',
+        '/mind-cast/api/v1/home?categories=all',
       );
 
       expect(status).toBe(200);
