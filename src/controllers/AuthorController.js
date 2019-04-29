@@ -6,12 +6,9 @@ exports.create = async (req, res, next) => {
   try {
     const { id } = await AuthorDAO.create(req.body);
 
-    return res
-      .status(201)
-      .json({
-        id,
-      })
-      .send();
+    return res.status(201).send({
+      id,
+    });
   } catch (err) {
     handleControllerError(err, next);
   }
@@ -21,10 +18,7 @@ exports.read = async (_req, res, next) => {
   try {
     const authors = await AuthorDAO.read();
 
-    return res
-      .status(200)
-      .json({ authors })
-      .send();
+    return res.status(200).send({ authors });
   } catch (err) {
     next(err);
   }
@@ -37,12 +31,9 @@ exports.readById = async (req, res, next) => {
     const author = await AuthorDAO.readById(id);
 
     if (!author) {
-      return res
-        .status(404)
-        .json({
-          message: 'Author not found',
-        })
-        .send();
+      return res.status(404).send({
+        message: 'Author not found',
+      });
     }
 
     const authorsFilteredByCategory = await AuthorDAO.filterByCategory(
@@ -59,10 +50,7 @@ exports.readById = async (req, res, next) => {
       },
     };
 
-    return res
-      .status(200)
-      .json({ author: result })
-      .send();
+    return res.status(200).send({ author: result });
   } catch (err) {
     next(err);
   }
@@ -112,10 +100,7 @@ exports.filterByName = async (req, res, next) => {
 
     const authors = await AuthorDAO.filterByName(name);
 
-    return res
-      .status(200)
-      .json({ authors })
-      .send();
+    return res.status(200).send({ authors });
   } catch (err) {
     next(err);
   }

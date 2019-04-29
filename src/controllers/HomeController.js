@@ -16,14 +16,11 @@ exports.read = async (req, res, next) => {
       const podcasts = await PodcastDAO.read();
       const authors = await AuthorDAO.read();
 
-      return res
-        .status(200)
-        .json({
-          hottestPodcasts: shuffleArray(podcasts).slice(0, 18),
-          trendingAuthors: shuffleArray(authors).slice(0, 18),
-          newReleases: shuffleArray(podcasts).slice(0, 18),
-        })
-        .send();
+      return res.status(200).send({
+        hottestPodcasts: shuffleArray(podcasts).slice(0, 18),
+        trendingAuthors: shuffleArray(authors).slice(0, 18),
+        newReleases: shuffleArray(podcasts).slice(0, 18),
+      });
     }
 
     const queryCategories = Array.isArray(categories)
@@ -33,14 +30,11 @@ exports.read = async (req, res, next) => {
     const podcasts = await PodcastDAO.filterByCategory(queryCategories);
     const authors = await AuthorDAO.filterByCategory(queryCategories);
 
-    return res
-      .status(200)
-      .json({
-        hottestPodcasts: shuffleArray(podcasts).slice(0, 18),
-        trendingAuthors: shuffleArray(authors).slice(0, 18),
-        newReleases: shuffleArray(podcasts).slice(0, 18),
-      })
-      .send();
+    return res.status(200).send({
+      hottestPodcasts: shuffleArray(podcasts).slice(0, 18),
+      trendingAuthors: shuffleArray(authors).slice(0, 18),
+      newReleases: shuffleArray(podcasts).slice(0, 18),
+    });
   } catch (err) {
     next(err);
   }

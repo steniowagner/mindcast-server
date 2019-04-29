@@ -26,7 +26,7 @@ exports.read = async (req, res, next) => {
     const authors = await AuthorDAO.filterByCategory([category]);
     const podcasts = await PodcastDAO.readByCategory(category);
 
-    return res.status(200).json({
+    return res.status(200).send({
       data: {
         authors,
         featured: shuffleArray(podcasts).slice(0, 15),
