@@ -15,7 +15,7 @@ exports.listen = async (req, res, next) => {
     const podcast = await PodcastDAO.readById(id);
 
     if (!podcast) {
-      return res.status(404).json({ message: 'Podcast not found.' });
+      return res.status(404).send({ message: 'Podcast not found.' });
     }
 
     gfs.findOne({ filename: podcast.fileName }, (err, file) => {
@@ -60,7 +60,7 @@ exports.download = async (req, res, next) => {
     const podcast = await PodcastDAO.readById(id);
 
     if (!podcast) {
-      return res.status(404).json({ message: 'Podcast not found.' });
+      return res.status(404).send({ message: 'Podcast not found.' });
     }
 
     const gfs = GridFs(connection.db, mongo);
@@ -111,10 +111,7 @@ exports.create = async (req, res, next) => {
       podcasts: [...author.podcasts, podcast.id],
     });
 
-    return res
-      .status(201)
-      .json({ podcast })
-      .send();
+    return res.status(201).send({ podcast });
   } catch (err) {
     handleControllerError(err, next);
   }
@@ -124,10 +121,7 @@ exports.read = async (_req, res, next) => {
   try {
     const podcasts = await PodcastDAO.read();
 
-    return res
-      .status(200)
-      .json({ podcasts })
-      .send();
+    return res.status(200).send({ podcasts });
   } catch (err) {
     next(err);
   }
@@ -140,16 +134,10 @@ exports.readById = async (req, res, next) => {
     const podcast = await PodcastDAO.readById(id);
 
     if (!podcast) {
-      return res
-        .status(404)
-        .json({ message: 'Podcast not found.' })
-        .send();
+      return res.status(404).send({ message: 'Podcast not found.' });
     }
 
-    return res
-      .status(200)
-      .json({ podcast })
-      .send();
+    return res.status(200).send({ podcast });
   } catch (err) {
     next(err);
   }
