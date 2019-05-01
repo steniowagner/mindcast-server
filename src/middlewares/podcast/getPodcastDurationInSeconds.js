@@ -10,8 +10,9 @@ module.exports = async (_req, res, next) => {
     }
 
     const getDuration = promisify(mp3Duration);
+    const duration = await getDuration(filePath);
 
-    res.locals.durationInSeconds = await getDuration(filePath);
+    res.locals.durationInSeconds = Math.ceil(duration);
 
     next();
   } catch (err) {
