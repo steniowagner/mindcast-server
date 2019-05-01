@@ -47,6 +47,8 @@ exports.listen = async (req, res, next) => {
       });
 
       podcastReadStream.on('open', () => podcastReadStream.pipe(res));
+
+      podcastReadStream.on('end', () => res.end());
     });
   } catch (err) {
     next(err);

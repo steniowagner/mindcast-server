@@ -27,11 +27,9 @@ exports.read = async (req, res, next) => {
     const podcasts = await PodcastDAO.readByCategory(category);
 
     return res.status(200).send({
-      data: {
-        authors,
-        featured: shuffleArray(podcasts).slice(0, 15),
-        trending: shuffleArray(podcasts).slice(0, 15),
-      },
+      authors,
+      featured: shuffleArray(podcasts).slice(0, 15),
+      trending: shuffleArray(podcasts).slice(0, 15),
     });
   } catch (err) {
     next(err);
