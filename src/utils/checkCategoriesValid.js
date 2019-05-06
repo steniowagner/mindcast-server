@@ -1,19 +1,12 @@
-const typesCategory = [
-  'science',
-  'technology',
-  'philosofy',
-  'literature',
-  'pop-culture',
-  'history',
-];
+const categories = require('./categories');
 
-module.exports = (categories) => {
-  if (!categories || categories.length === 0) {
+module.exports = (categoriesReceived) => {
+  if (!categoriesReceived || categoriesReceived.length === 0) {
     return false;
   }
 
-  for (let i = 0; i < categories.length; i++) {
-    if (!typesCategory.includes(categories[i])) {
+  for (let i = 0; i < categoriesReceived.length; i++) {
+    if (!categories.includes(categoriesReceived[i])) {
       return false;
     }
   }

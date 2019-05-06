@@ -424,6 +424,30 @@ describe('Testing Author Routes', () => {
 
       done();
     });
+
+    it('should return an error message and 400 HTTP status code if the category is not valid', async (done) => {
+      const { id } = await createSingleAuthor();
+
+      const { status, body } = await request(app)
+        .post(`/mind-cast/api/v1/authors/${id}/podcasts`)
+        .field('thumbnailImageURL', fakePodcast.thumbnailImageURL)
+        .field('description', fakePodcast.description)
+        .field('imageURL', fakePodcast.imageURL)
+        .field('category', 'invalid')
+        .field('title', fakePodcast.title)
+        .field('stars', fakePodcast.stars)
+        .attach(
+          'file',
+          `${__dirname.replace(/^(.*\/__tests__)(.*)$/, '$1')}/test.mp3`,
+        );
+
+      expect(status).toBe(400);
+      expect(typeof body.message).toBe('string');
+      expect(body).toHaveProperty('message', "Category 'invalid' is invalid.");
+      expect(body.podcast).toBeUndefined();
+
+      done();
+    });
   });
 
   describe('GET /podcasts', () => {
@@ -630,7 +654,7 @@ describe('Testing Author Routes', () => {
       const author = await createSingleAuthor();
 
       await createMultiplesPodcasts(5, author.id, { category: 'science' });
-      await createMultiplesPodcasts(5, author.id, { category: 'literature' });
+      await createMultiplesPodcasts(5, author.id, { category: 'business' });
 
       const { status, body } = await request(app).get(
         '/mind-cast/api/v1/categories/science',
@@ -639,21 +663,23 @@ describe('Testing Author Routes', () => {
       const isSameCategory = podcasts => podcasts.some(podcast => podcast.category !== 'science');
 
       expect(status).toBe(200);
-      expect(body).toHaveProperty('data');
+      expect(body).toHaveProperty('authors');
+      expect(body).toHaveProperty('featured');
+      expect(body).toHaveProperty('trending');
 
-      expect(body.data).toHaveProperty('featured');
-      expect(Array.isArray(body.data.featured)).toBe(true);
-      expect(body.data.featured.length).toBe(5);
-      expect(isSameCategory(body.data.featured)).toBe(false);
+      expect(body).toHaveProperty('featured');
+      expect(Array.isArray(body.featured)).toBe(true);
+      expect(body.featured.length).toBe(5);
+      expect(isSameCategory(body.featured)).toBe(false);
 
-      expect(body.data).toHaveProperty('trending');
-      expect(Array.isArray(body.data.trending)).toBe(true);
-      expect(body.data.trending.length).toBe(5);
-      expect(isSameCategory(body.data.trending)).toBe(false);
+      expect(body).toHaveProperty('trending');
+      expect(Array.isArray(body.trending)).toBe(true);
+      expect(body.trending.length).toBe(5);
+      expect(isSameCategory(body.trending)).toBe(false);
 
-      expect(body.data).toHaveProperty('authors');
-      expect(Array.isArray(body.data.authors)).toBe(true);
-      expect(body.data.authors.length).toBe(1);
+      expect(body).toHaveProperty('authors');
+      expect(Array.isArray(body.authors)).toBe(true);
+      expect(body.authors.length).toBe(1);
 
       done();
     });
@@ -666,19 +692,18 @@ describe('Testing Author Routes', () => {
       const isSameCategory = podcasts => podcasts.some(podcast => podcast.category !== 'science');
 
       expect(status).toBe(200);
-      expect(body).toHaveProperty('data');
 
-      expect(body.data).toHaveProperty('featured');
-      expect(Array.isArray(body.data.featured)).toBe(true);
-      expect(body.data.featured.length).toBe(0);
+      expect(body).toHaveProperty('featured');
+      expect(Array.isArray(body.featured)).toBe(true);
+      expect(body.featured.length).toBe(0);
 
-      expect(body.data).toHaveProperty('trending');
-      expect(Array.isArray(body.data.trending)).toBe(true);
-      expect(body.data.trending.length).toBe(0);
+      expect(body).toHaveProperty('trending');
+      expect(Array.isArray(body.trending)).toBe(true);
+      expect(body.trending.length).toBe(0);
 
-      expect(body.data).toHaveProperty('authors');
-      expect(Array.isArray(body.data.authors)).toBe(true);
-      expect(body.data.authors.length).toBe(0);
+      expect(body).toHaveProperty('authors');
+      expect(Array.isArray(body.authors)).toBe(true);
+      expect(body.authors.length).toBe(0);
 
       done();
     });
@@ -691,9 +716,11 @@ describe('Testing Author Routes', () => {
       expect(status).toBe(400);
       expect(body).toHaveProperty(
         'message',
-        'Category must be one of: science,technology,philosofy,literature,pop-culture,history.',
+        'Category must be one of: science,technology,philosofy,business,pop-culture,history.',
       );
-      expect(body.data).toBeUndefined();
+      expect(body.featured).toBeUndefined();
+      expect(body.trending).toBeUndefined();
+      expect(body.authors).toBeUndefined();
 
       done();
     });
@@ -715,7 +742,7 @@ describe('Testing Author Routes', () => {
 
       await createMultiplesPodcasts(5, authors[0].id, { category: 'science' });
       await createMultiplesPodcasts(5, authors[1].id, {
-        category: 'literature',
+        category: 'business',
       });
 
       const { status, body } = await request(app).get(
@@ -744,7 +771,7 @@ describe('Testing Author Routes', () => {
 
       await createMultiplesPodcasts(5, authors[0].id, { category: 'science' });
       await createMultiplesPodcasts(5, authors[1].id, {
-        category: 'literature',
+        category: 'business',
       });
 
       const { status, body } = await request(app).get(
@@ -797,7 +824,7 @@ describe('Testing Author Routes', () => {
       await createMultiplesPodcasts(5, authors[1].id, { category: 'science' });
 
       const { status, body } = await request(app).get(
-        '/mind-cast/api/v1/home?categories=literature',
+        '/mind-cast/api/v1/home?categories=business',
       );
 
       expect(status).toBe(200);

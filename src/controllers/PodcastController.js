@@ -1,9 +1,9 @@
 const GridFs = require('gridfs-stream');
 
 const handleControllerError = require('../utils/handleControllerError');
+const checkCategoriesValid = require('../utils/checkCategoriesValid');
 const persistFileGridFS = require('../utils/persistFileGridFS');
 const { connection, mongo } = require('../db');
-
 const PodcastDAO = require('../dao/PodcastDAO');
 const AuthorDAO = require('../dao/AuthorDAO');
 
@@ -86,6 +86,15 @@ exports.download = async (req, res, next) => {
 exports.create = async (req, res, next) => {
   try {
     const { id } = req.params;
+    const { category } = req.body;
+
+    const isCategoryValid = checkCategoriesValid([category]);
+
+    if (!isCategoryValid) {
+      return res
+        .status(400)
+        .send({ message: `Category '${category}' is invalid.` });
+    }
 
     const author = await AuthorDAO.readById(id);
 

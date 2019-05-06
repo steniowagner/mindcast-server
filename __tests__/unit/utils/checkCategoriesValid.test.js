@@ -2,7 +2,7 @@ const checkCategoriesValid = require('../../../src/utils/checkCategoriesValid');
 
 describe('Testing the checkCategoriesValid method', () => {
   it('should return true when the categories are valids', () => {
-    const categories = ['science', 'technology', 'literature'];
+    const categories = ['science', 'technology', 'business'];
 
     const result = checkCategoriesValid(categories);
 

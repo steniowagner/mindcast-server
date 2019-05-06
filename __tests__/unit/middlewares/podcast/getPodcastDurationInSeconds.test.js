@@ -26,7 +26,7 @@ describe('testing the getPodcastDurationInSeconds middleware', () => {
     await getPodcastDurationInSeconds(null, res, next);
 
     expect(next).toHaveBeenCalledTimes(1);
-    expect(Math.floor(res.locals.durationInSeconds)).toBe(28);
+    expect(Math.floor(res.locals.durationInSeconds)).toBe(29);
 
     done();
   });
