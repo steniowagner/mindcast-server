@@ -1,15 +1,7 @@
 const shuffleArray = require('../utils/shuffleArray');
 const PodcastDAO = require('../dao/PodcastDAO');
 const AuthorDAO = require('../dao/AuthorDAO');
-
-const categories = [
-  'science',
-  'technology',
-  'philosofy',
-  'literature',
-  'pop-culture',
-  'history',
-];
+const categories = require('../utils/categories');
 
 exports.read = async (req, res, next) => {
   try {

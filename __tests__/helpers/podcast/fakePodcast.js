@@ -1,15 +1,7 @@
 const faker = require('faker');
+const categories = require('../../../src/utils/categories');
 
 const getCategory = () => {
-  const categories = [
-    'science',
-    'technology',
-    'philosofy',
-    'literature',
-    'pop-culture',
-    'history',
-  ];
-
   const MAX = categories.length - 1;
   const MIN = 0;
 
