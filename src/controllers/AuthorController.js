@@ -41,12 +41,27 @@ exports.readById = async (req, res, next) => {
       author.id,
     );
 
+    const getPodcasts = ({ podcasts, name }) => {
+      const podcastsSelected = shuffleArray(podcasts)
+        .slice(0, 5)
+        .map(podcast => ({
+          ...podcast,
+          author: {
+            name,
+          },
+        }));
+
+      return podcastsSelected;
+    };
+
+    const authorData = author.toObject();
+
     const result = {
-      ...author._doc,
+      ...authorData,
       relatedAuthors: shuffleArray(authorsFilteredByCategory).slice(0, 5),
       podcasts: {
-        newReleases: shuffleArray(author.podcasts).slice(0, 5),
-        featured: shuffleArray(author.podcasts).slice(0, 5),
+        newReleases: getPodcasts(authorData),
+        featured: getPodcasts(authorData),
       },
     };
 
