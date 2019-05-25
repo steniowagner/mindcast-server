@@ -46,6 +46,7 @@ exports.readById = async (req, res, next) => {
         .slice(0, 5)
         .map(podcast => ({
           ...podcast,
+          id: podcast._id,
           author: {
             name,
           },
