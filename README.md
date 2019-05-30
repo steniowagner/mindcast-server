@@ -1,4 +1,5 @@
 
+
 # MindCast-Server [![Build Status](https://travis-ci.org/steniowagner/mindcast-server.svg?branch=master)](https://travis-ci.org/steniowagner/mindcast-server) [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](https://github.com/steniowagner/mindcast-server/blob/master/LICENSE)
 
 
@@ -265,11 +266,19 @@ For this request, you'll need to send the .mp3 file and all the [Podcast](#podca
 
 #### Author
 
+> *podcasts*: Author's podcasts.
+
+> *categories*: Categories of the Author.
+
+> *name*: Author's name.
+
 > *profileImageURL*: An URL of an image to represent the Author (you can use some image with more than 600 x 400)
 
 > *thumbnailProfileImageURL*:  The same image of `imageURL`, but with a smaller scale (less than (90 x 90))
 
 > *podcasts*: This field isn't required for any request from the user, it will always be sent by the server.
+
+> *about*: A description of the Author.
 
 ```json
 {
@@ -303,9 +312,19 @@ For this request, you'll need to send the .mp3 file and all the [Podcast](#podca
 
 #### Podcast
 
+> *author*: ID of the author.
+
+> "title": Title of the podcast.
+
+> "description": Description of the podcast.
+
 > *imageURL*: An image to represent the podcast (you can use some image with more than 600 x 400)
 
 > *thumbnailImageURL*: The same image of `imageURL`, but with a smaller scale (less than (90 x 90).
+
+> *category*: Category of the podcast.
+
+> *stars*: Stars of the podcast.
 
 > *duration*, *durationInSeconds* and *fileName*: These fields are created and sent by the server after to analyze and parse the uploaded audio file, and aren't required for any request.
 
