@@ -38,7 +38,7 @@ To run this project in the development mode, you'll need to have a basic environ
 **Cloning the Repository**
 
 ```
-$ https://github.com/steniowagner/mindcast-server
+$ git clone https://github.com/steniowagner/mindcast-server
 
 $ cd mindcast-server
 ```
