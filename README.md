@@ -379,7 +379,6 @@ For this request, you'll need to send the .mp3 file and all the [Podcast](#podca
 - [express](https://expressjs.com/) - Router of the Application
 - [MongoDB](https://www.mongodb.com/) - Database
 - [mongoose](https://mongoosejs.com/) - Object Modeling + DB Connector
-- [PM2](http://pm2.keymetrics.io/) - Process Manager used in the production
 - [nodemon](https://nodemon.io/) - Process Manager used in the development
 - [dotenv](https://github.com/motdotla/dotenv) - Environment loader
 - [multer](https://github.com/expressjs/multer) - File Upload
