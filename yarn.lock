@@ -709,20 +709,10 @@ binary-extensions@^1.0.0:
   resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-1.13.0.tgz#9523e001306a32444b907423f1de2164222f6ab1"
   integrity sha512-EgmjVLMn22z7eGGv3kcnHwSnJXmFHjISTY9E/S5lIcTD3Oxw05QTcBLNkJFzcb3cNueUdF/IN4U+d78V0zO8Hw==
 
-bluebird-co@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/bluebird-co/-/bluebird-co-2.2.0.tgz#e0a49e63b6b17e34c91f48b3934b769a377fbed7"
-  integrity sha1-4KSeY7axfjTJH0izk0t2mjd/vtc=
-
 bluebird@3.5.1:
   version "3.5.1"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.1.tgz#d9551f9de98f1fcda1e683d17ee91a0602ee2eb9"
   integrity sha512-MKiLiV+I1AA596t9w1sQJ8jkiSr5+ZKi0WKrYGUn6d1Fx+Ij4tIj+m2WMQSGczs5jZVxV339chE8iwk6F64wjA==
-
-bluebird@^3.5.1:
-  version "3.5.4"
-  resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.4.tgz#d6cc661595de30d5b3af5fcedd3c0b3ef6ec5714"
-  integrity sha512-FG+nFEZChJrbQ9tIccIfZJBz3J7mLrAhxakAbnrJWn8d7aKOC+LWifa0G+p4ZqKp4y13T7juYvdhq9NzKdsrjw==
 
 body-parser@1.18.3, body-parser@^1.18.3:
   version "1.18.3"
@@ -1141,7 +1131,7 @@ content-disposition@0.5.2:
   resolved "https://registry.yarnpkg.com/content-disposition/-/content-disposition-0.5.2.tgz#0cf68bb9ddf5f2be7961c3a85178cb85dba78cb4"
   integrity sha1-DPaLud318r55YcOoUXjLhdunjLQ=
 
-content-type@~1.0.4:
+content-type@^1.0.4, content-type@~1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/content-type/-/content-type-1.0.4.tgz#e138cc75e040c727b1966fe5e5f8c9aee256fe3b"
   integrity sha512-hIP3EEPs8tB9AT1L+NUqtwOAps4mk2Zob89MWXMHjHWg9milF/j4osnnQLXBCBFBk/tvIG/tUc9mOUJiPBhPXA==
@@ -1992,6 +1982,11 @@ file-entry-cache@^5.0.1:
   integrity sha512-bCg29ictuBaKUwwArK4ouCaqDgLZcysCFLmM/Yn/FDoqndh/9vNuQfXRDvTuXKLxfD/JtZQGKFT8MGcJBK644g==
   dependencies:
     flat-cache "^2.0.1"
+
+file-type@^12.1.0:
+  version "12.2.0"
+  resolved "https://registry.yarnpkg.com/file-type/-/file-type-12.2.0.tgz#bc4bce830e38a96a0ecfea0e2dfcee2855ed1380"
+  integrity sha512-bkDBeH5doAqP69axEO69OviLlWbrZ10Ne2OPHaxBgG+fyT0w/2zfMzJz21SPwq5Iq0aN70q7RN3KRcdUY427Mg==
 
 fileset@^2.0.3:
   version "2.0.3"
@@ -3749,6 +3744,11 @@ media-typer@0.3.0:
   resolved "https://registry.yarnpkg.com/media-typer/-/media-typer-0.3.0.tgz#8710d7af0aa626f8fffa1ce00168545263255748"
   integrity sha1-hxDXrwqmJvj/+hzgAWhUUmMlV0g=
 
+media-typer@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/media-typer/-/media-typer-1.1.0.tgz#6ab74b8f2d3320f2064b2a87a38e7931ff3a5561"
+  integrity sha512-aisnrDP4GNe06UcKFnV5bfMNPBUw4jsLGaWwWfnH3v02GnBuXX2MCVn5RbrWo0j3pczUilYblq7fQ7Nw2t5XKw==
+
 mem@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/mem/-/mem-1.1.0.tgz#5edd52b485ca1d900fe64895505399a0dfa45f76"
@@ -3949,14 +3949,6 @@ mongoose@^5.4.14:
     sift "7.0.1"
     sliced "1.0.1"
 
-mp3-duration@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/mp3-duration/-/mp3-duration-1.1.0.tgz#c002e4e454448060873660abb4da7d10118d0e9c"
-  integrity sha1-wALk5FREgGCHNmCrtNp9EBGNDpw=
-  dependencies:
-    bluebird "^3.5.1"
-    bluebird-co "^2.2.0"
-
 mpath@0.5.1:
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/mpath/-/mpath-0.5.1.tgz#17131501f1ff9e6e4fbc8ffa875aa7065b5775ab"
@@ -3996,6 +3988,18 @@ multer@^1.4.1:
     on-finished "^2.3.0"
     type-is "^1.6.4"
     xtend "^4.0.0"
+
+music-metadata@^4.3.0:
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/music-metadata/-/music-metadata-4.3.0.tgz#00359a3e93a5be17c04790235d93a65c7221f265"
+  integrity sha512-3AkowwE+sdT/YqGOacbekPEQvMszzFHLJid1mVBAiOM9HPuPV7Wm+uej3SRYydhzaLJpZW+yPqGYpgz4BwrcuQ==
+  dependencies:
+    content-type "^1.0.4"
+    debug "^4.1.0"
+    file-type "^12.1.0"
+    media-typer "^1.1.0"
+    strtok3 "^3.0.0"
+    token-types "^1.0.1"
 
 mute-stream@0.0.7:
   version "0.0.7"
@@ -5563,6 +5567,15 @@ strip-json-comments@^2.0.1, strip-json-comments@~2.0.1:
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
   integrity sha1-PFMZQukIwml8DsNEhYwobHygpgo=
 
+strtok3@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/strtok3/-/strtok3-3.0.0.tgz#2fe07702c27787fd4766a22cafe4ac9a4d9e0706"
+  integrity sha512-Sm17gVuapi4jR5cE6UnYhstZ7jGeH9a/eM7Sbg5IDk6bw3Z7FF0UTA1tnZo2Gt7OmY+/O9kVAnAGJ9mglvf36w==
+  dependencies:
+    debug "^4.1.1"
+    then-read-stream "^2.0.0"
+    token-types "^1.0.1"
+
 superagent-binary-parser@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/superagent-binary-parser/-/superagent-binary-parser-1.0.1.tgz#e5fd0aa95960fab05d7f797757331d26afa7f79d"
@@ -5695,6 +5708,11 @@ text-table@^0.2.0, text-table@~0.2.0:
   resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
   integrity sha1-f17oI66AUgfACvLfSoTsP8+lcLQ=
 
+then-read-stream@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/then-read-stream/-/then-read-stream-2.0.0.tgz#94bb75f01cac12198ecfc277f914d3ce5a1eb787"
+  integrity sha512-mdQRdZ+71UVL9H6y2bRt/SlpIgzi223LEx8gxbRCfVURnXrokMYo1w+jNcATTZLR25kVUb+h8X6BlmoW4173fQ==
+
 throat@^4.0.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/throat/-/throat-4.1.0.tgz#89037cbc92c56ab18926e6ba4cbb200e15672a6a"
@@ -5751,6 +5769,11 @@ to-regex@^3.0.1, to-regex@^3.0.2:
     extend-shallow "^3.0.2"
     regex-not "^1.0.2"
     safe-regex "^1.1.0"
+
+token-types@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/token-types/-/token-types-1.0.1.tgz#c91671bd80f7e2ded10dee4b8ff17247c40378c7"
+  integrity sha512-Q2yPT4GA4gmIAgUrL9O9LRzKFKJ8FA1P5eiOfC2eH+IZMSJVQBCML1SOooeRicIIvTr/UZuTAX5PqMzgBXJOvg==
 
 toposort@^2.0.2:
   version "2.0.2"
