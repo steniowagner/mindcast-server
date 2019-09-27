@@ -3989,17 +3989,17 @@ multer@^1.4.1:
     type-is "^1.6.4"
     xtend "^4.0.0"
 
-music-metadata@^4.3.0:
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/music-metadata/-/music-metadata-4.3.0.tgz#00359a3e93a5be17c04790235d93a65c7221f265"
-  integrity sha512-3AkowwE+sdT/YqGOacbekPEQvMszzFHLJid1mVBAiOM9HPuPV7Wm+uej3SRYydhzaLJpZW+yPqGYpgz4BwrcuQ==
+music-metadata@^4.8.0:
+  version "4.8.0"
+  resolved "https://registry.yarnpkg.com/music-metadata/-/music-metadata-4.8.0.tgz#5bf1d8afe8f0cdc652847b7a39cb95d61982c179"
+  integrity sha512-eQp9mDTwg8WEqVRIEj1lUuqZ4qiQvXa71ipotkPFKch4ekTAtGTzU/TXAi7DhCeHsZB8WLfGUBTFN1NGBE1iOQ==
   dependencies:
     content-type "^1.0.4"
     debug "^4.1.0"
     file-type "^12.1.0"
     media-typer "^1.1.0"
-    strtok3 "^3.0.0"
-    token-types "^1.0.1"
+    strtok3 "^3.0.1"
+    token-types "^1.0.3"
 
 mute-stream@0.0.7:
   version "0.0.7"
@@ -5567,13 +5567,13 @@ strip-json-comments@^2.0.1, strip-json-comments@~2.0.1:
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
   integrity sha1-PFMZQukIwml8DsNEhYwobHygpgo=
 
-strtok3@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/strtok3/-/strtok3-3.0.0.tgz#2fe07702c27787fd4766a22cafe4ac9a4d9e0706"
-  integrity sha512-Sm17gVuapi4jR5cE6UnYhstZ7jGeH9a/eM7Sbg5IDk6bw3Z7FF0UTA1tnZo2Gt7OmY+/O9kVAnAGJ9mglvf36w==
+strtok3@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/strtok3/-/strtok3-3.0.1.tgz#67b67c318b44f9fbff97fd94033681ec502fdfa2"
+  integrity sha512-1aRPsZAxNJ8xo0UPpJgI7VRLZsjal0lvjkF4kIvHL6u3RxHM+hbenfJA0hVmwoUcjbvHuo/HqeB+tTUYx2FciA==
   dependencies:
     debug "^4.1.1"
-    then-read-stream "^2.0.0"
+    then-read-stream "^2.0.6"
     token-types "^1.0.1"
 
 superagent-binary-parser@^1.0.1:
@@ -5708,10 +5708,10 @@ text-table@^0.2.0, text-table@~0.2.0:
   resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
   integrity sha1-f17oI66AUgfACvLfSoTsP8+lcLQ=
 
-then-read-stream@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/then-read-stream/-/then-read-stream-2.0.0.tgz#94bb75f01cac12198ecfc277f914d3ce5a1eb787"
-  integrity sha512-mdQRdZ+71UVL9H6y2bRt/SlpIgzi223LEx8gxbRCfVURnXrokMYo1w+jNcATTZLR25kVUb+h8X6BlmoW4173fQ==
+then-read-stream@^2.0.6:
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/then-read-stream/-/then-read-stream-2.0.6.tgz#8d8e2b165b54a1c5f866cb43e2164c1f5f9b85ac"
+  integrity sha512-5HA8j7O3NL6P4Pi0IzZx8/t46sK0+h3n+P/P0Yzi11ODwR+ZWjG+KILzLXPvJM7PvYjK7sDKfcN1YVCNGbPNEQ==
 
 throat@^4.0.0:
   version "4.1.0"
@@ -5774,6 +5774,11 @@ token-types@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/token-types/-/token-types-1.0.1.tgz#c91671bd80f7e2ded10dee4b8ff17247c40378c7"
   integrity sha512-Q2yPT4GA4gmIAgUrL9O9LRzKFKJ8FA1P5eiOfC2eH+IZMSJVQBCML1SOooeRicIIvTr/UZuTAX5PqMzgBXJOvg==
+
+token-types@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/token-types/-/token-types-1.0.3.tgz#737cc01939d23577ae339b88de82fa3cb3d0b735"
+  integrity sha512-8THi5oekS/TLE01xOMknevTgHwVEcWOsO3zlqxGvzAz+tjZGiACyjcZuH1LTJuHvqmb8SsX/BeqcfQA0JRwqzA==
 
 toposort@^2.0.2:
   version "2.0.2"

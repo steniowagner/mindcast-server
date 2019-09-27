@@ -42,7 +42,7 @@
     "gridfs-stream": "https://github.com/steniowagner/gridfs-stream/tarball/ef19db5ef74111f4d381581973d4fe7c93851d59",
     "mongoose": "^5.4.14",
     "multer": "^1.4.1",
-    "music-metadata": "^4.3.0"
+    "music-metadata": "^4.8.0"
   },
   "devDependencies": {
     "coveralls": "^3.0.3",
