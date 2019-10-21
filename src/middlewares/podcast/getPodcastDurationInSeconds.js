@@ -1,5 +1,4 @@
-const mp3Duration = require('mp3-duration');
-const { promisify } = require('util');
+const mm = require('music-metadata');
 
 module.exports = async (_req, res, next) => {
   try {
@@ -9,13 +8,11 @@ module.exports = async (_req, res, next) => {
       return res.status(400).send({ message: 'File is required' });
     }
 
-    const getDuration = promisify(mp3Duration);
-    const duration = await getDuration(filePath);
+    const { format } = await mm.parseFile(filePath, { duration: true });
 
-    res.locals.durationInSeconds = Math.ceil(duration);
-
-    next();
+    res.locals.durationInSeconds = Math.ceil(format.duration);
   } catch (err) {
-    next(err);
+    return next(err);
   }
+  next();
 };

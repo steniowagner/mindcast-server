@@ -1,9 +1,4 @@
-const mp3Duration = require('mp3-duration');
-const { promisify } = require('util');
-
 const getPodcastDurationInSeconds = require('../../../../src/middlewares/podcast/getPodcastDurationInSeconds');
-
-const duration = promisify(mp3Duration);
 
 describe('testing the getPodcastDurationInSeconds middleware', () => {
   const next = jest.fn();
