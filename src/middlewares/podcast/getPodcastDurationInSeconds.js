@@ -13,9 +13,8 @@ module.exports = async (_req, res, next) => {
     const duration = await getDuration(filePath);
 
     res.locals.durationInSeconds = Math.ceil(duration);
-
-    next();
   } catch (err) {
-    next(err);
+    return next(err);
   }
+  next();
 };
